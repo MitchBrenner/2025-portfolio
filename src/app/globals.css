@@ -24,3 +24,7 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.font-satoshi {
+  font-family: var(--font-satoshi), sans-serif;
+}
