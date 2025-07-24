@@ -90,7 +90,7 @@ function Hero() {
                 value: "#fff",
               },
               number: {
-                value: 500,
+                value: 300,
               },
               opacity: {
                 value: { min: 0.3, max: 1 },
@@ -104,7 +104,7 @@ function Hero() {
               move: {
                 direction: "bottom-right",
                 enable: true,
-                speed: { min: 5, max: 8 },
+                speed: { min: 2, max: 7 },
                 straight: true,
               },
             },
@@ -150,7 +150,7 @@ function Hero() {
 
       {/* Scroll Text */}
       <div
-        className=" cursor-pointer absolute bottom-0 p-4 z-36 w-full flex justify-center items-center scroll-text"
+        className=" cursor-pointer absolute bottom-12 sm:bottom-0 p-4 z-36 w-full flex justify-center items-center scroll-text"
         onClick={() => {
           document
             .getElementById("about")
