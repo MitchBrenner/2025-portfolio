@@ -220,14 +220,17 @@ function Hero() {
         />
       </div>
 
-      {/* Name Text */}
+      {/* Introduction */}
       <div
         id="name"
-        className="absolute flex w-full mt-24 justify-center items-center text-center name-text z-2"
+        className="name-text absolute inset-x-0 top-0 z-2 flex flex-col items-center gap-2 px-4 pt-10 text-center sm:pt-14 lg:pt-16"
       >
         <h1 className="text-[#1a2229] font-satoshi font-black text-5xl md:text-6xl lg:text-8xl">
           Mitch Brenner
         </h1>
+        <p className="font-satoshi text-[11px] font-medium uppercase tracking-[0.16em] text-[#1a2229] sm:text-xs md:text-sm">
+          Full-Stack Software Engineer · SF
+        </p>
       </div>
 
       {/* Scroll Text */}
