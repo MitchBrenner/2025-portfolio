@@ -1,17 +1,17 @@
 export const projects = [
   {
-    title: "Hillstone Website 🍸",
+    title: "Hillstone Website",
     description:
-      "A sleek and modern website for a cocktail bar, showcasing their menu and ambiance. Uses animations to enhance user experience.",
+      "A cocktail-bar site focused on atmosphere, motion, and easy menu browsing.",
     image: "/projects/hillstone.png",
     githubLink: "https://github.com/MitchBrenner/hillstone",
     liveLink: "https://hillstone.vercel.app",
     tech: ["Next.js", "TypeScript", "Tailwind CSS", "GSAP"],
   },
   {
-    title: "Findly ⚡",
+    title: "Findly",
     description:
-      "Candidate Search App — powered by AI. It lets recruiters search and evaluate engineering candidates using both structured filters and natural language queries.",
+      "AI-powered candidate search with natural-language queries and structured filters.",
     image: "/projects/findly.png",
     githubLink: "https://github.com/MitchBrenner/findly",
     liveLink: "https://useFindly.vercel.app",
@@ -25,9 +25,9 @@ export const projects = [
     ],
   },
   {
-    title: "Logoless 🔥",
+    title: "Logoless",
     description:
-      "A mobile app that utilizes Computer Vision to dynamically remove watermarks from videos.",
+      "A mobile video editor using computer vision to detect and remove watermarks.",
     image: "/projects/logoless.png",
     githubLink:
       "https://github.com/MitchBrenner/logoless-app?tab=readme-ov-file",

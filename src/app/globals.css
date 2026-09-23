@@ -47,6 +47,35 @@
   font-family: var(--font-satoshi), sans-serif;
 }
 
+.projects-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(100% - 4rem);
+  align-items: stretch;
+  gap: 1rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.projects-track::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .projects-track {
+    grid-auto-columns: calc((100% - 1.25rem - 5rem) / 2);
+    gap: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .projects-track {
+    grid-auto-columns: calc((100% - 2.5rem - 6.25rem) / 3);
+  }
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

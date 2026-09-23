@@ -208,7 +208,7 @@ function Hero() {
       </div>
 
       {/* Foreground Mountain */}
-      <div className="absolute inset-x-0 bottom-0 z-7 h-[12%] bg-[#1a2229]" />
+      <div className="absolute inset-x-0 bottom-0 z-7 h-[12%] bg-[#1a222b]" />
       <div className="front-mountain absolute -bottom-[12%] left-0 z-10 h-[80%] w-full">
         <Image
           src="/images/front-mountain.webp"
@@ -238,7 +238,7 @@ function Hero() {
         className=" cursor-pointer absolute bottom-12 sm:bottom-0 p-4 z-36 w-full flex justify-center items-center scroll-text"
         onClick={() => {
           document
-            .getElementById("about")
+            .getElementById("experience")
             ?.scrollIntoView({ behavior: "smooth" });
         }}
       >

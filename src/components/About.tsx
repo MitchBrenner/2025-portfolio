@@ -1,129 +1,96 @@
-"use client";
-
-import { techStack } from "@/lib/tech";
-import React, { useRef } from "react";
+import ProjectsCarousel from "./ProjectsCarousel";
 import Tech from "./Tech";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-import { projects } from "@/lib/projects";
-import ProjectCard from "./Card";
-import Image from "next/image";
+import { techStack } from "@/lib/tech";
 
-gsap.registerPlugin(ScrollTrigger);
+const toolkit = [
+  {
+    title: "Web & mobile",
+    names: ["Next.js", "React", "React Native", "Expo", "TypeScript", "Tailwind CSS"],
+  },
+  {
+    title: "Data & services",
+    names: ["PostgreSQL", "Convex", "Clerk", "Python"],
+  },
+  {
+    title: "Motion",
+    names: ["GSAP"],
+  },
+];
 
 function About() {
-  const container = useRef(null);
-
-  useGSAP(
-    () => {
-      gsap.from(".tech-item", {
-        y: 50,
-        opacity: 0,
-        stagger: 0.15,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".tech-item",
-          start: "top 90%",
-          // scrub: true,
-        },
-      });
-      gsap.to(".blob", {
-        x: -200,
-        opacity: 0.5,
-        scrollTrigger: {
-          trigger: ".blob",
-          start: "top 80%",
-          end: "bottom 20%",
-          scrub: true,
-        },
-      });
-      // Project card animation
-      gsap.from(".project-card", {
-        y: 50,
-        opacity: 0,
-        stagger: 0.3,
-        duration: 0.8,
-        delay: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".tech-item",
-          start: "top 70%",
-          // scrub: true,
-        },
-      });
-      gsap.to(".topo", {
-        scale: 1.5,
-        scrollTrigger: {
-          trigger: ".topo",
-          start: "top 80%",
-          end: "bottom 20%",
-          scrub: true,
-        },
-      });
-    },
-    { scope: container }
-  );
-
   return (
-    <div
-      id="about"
-      ref={container}
-      className="relative w-full min-h-screen bg-[#1a2229] z-72 p-4 sm:p-8 lg:p-16 overflow-hidden"
-    >
-      <div>
-        <Image
-          src="/images/top.jpg"
-          alt="Background Image"
-          className="absolute inset-0 w-full h-full object-cover opacity-5 topo"
-          fill
-        />
-        {/* <div className="absolute inset-0 bg-[#1a2229] opacity-10 mix-blend-multiply" /> */}
-      </div>
-
-      {/* Blobs */}
-      <div className="absolute inset-0 -z-10 overflow-hidden blob">
-        <div className="absolute top-[20%] left-[15%] w-52 h-52 bg-purple-500 rounded-full opacity-15 blur-2xl" />
-      </div>
-
-      {/* Tech Section */}
-      <div className="max-w-5xl mx-auto">
-        <div className="flex items-center space-x-4 mb-8 text-white text-5xl italic">
-          <h1>Tech</h1>
-        </div>
-
-        {/* tech items */}
-        <div className="flex flex-row flex-wrap gap-2">
-          {techStack.map((tech) => (
-            <div key={tech.name} className="tech-item">
-              <Tech name={tech.name} image={tech.image} />
+    <div id="about" className="relative z-10 overflow-hidden">
+      <section
+        id="projects"
+        aria-labelledby="projects-heading"
+        className="relative px-6 py-12 text-white sm:px-10 sm:py-16 lg:px-16"
+      >
+        <div>
+          <div className="mx-auto mb-8 grid max-w-6xl gap-4 md:mb-9 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:items-end md:gap-16">
+            <div>
+              <p className="font-satoshi text-xs font-bold tracking-[0.2em] text-[#a9c7d4]">
+                02 / SELECTED WORK
+              </p>
+              <h2
+                id="projects-heading"
+                className="font-satoshi mt-4 text-3xl font-bold tracking-tight sm:text-4xl"
+              >
+                Built to be used.
+              </h2>
             </div>
-          ))}
-        </div>
-      </div>
+            <p className="font-satoshi max-w-md text-sm leading-relaxed text-white/60 md:justify-self-end">
+              A few projects spanning web, mobile, and the space between.
+            </p>
+          </div>
 
-      {/* Projects Section */}
-      <div className="max-w-5xl mx-auto mt-20">
-        <div className="flex items-center space-x-4 mb-8 text-white text-5xl italic">
-          <h1 className="align">Projects</h1>
+          <div className="mx-auto max-w-[1320px]">
+            <ProjectsCarousel />
+          </div>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
-          {projects.map((project) => (
-            <div className="project-card" key={project.title}>
-              <ProjectCard
-                title={project.title}
-                image={project.image}
-                tech={project.tech}
-                description={project.description}
-                githubUrl={project.githubLink}
-                liveUrl={project.liveLink}
-              />
-            </div>
-          ))}
+      <section
+        id="skills"
+        aria-labelledby="skills-heading"
+        className="relative px-6 py-12 text-white sm:px-10 sm:py-16 lg:px-16"
+      >
+        <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-14">
+          <div>
+            <p className="font-satoshi text-xs font-medium tracking-[0.2em] text-white/50">
+              03 / TOOLKIT
+            </p>
+            <h2
+              id="skills-heading"
+              className="font-satoshi mt-4 max-w-md text-3xl font-bold tracking-tight sm:text-4xl"
+            >
+              Tools I reach for.
+            </h2>
+            <p className="font-satoshi mt-4 max-w-sm text-sm leading-relaxed text-white/60">
+              The technologies I use to take an idea from prototype to
+              production.
+            </p>
+          </div>
+
+          <div>
+            {toolkit.map((group) => (
+              <div
+                key={group.title}
+                className="border-t border-white/15 py-4 first:pt-4 last:border-b last:border-white/15"
+              >
+                <h3 className="font-satoshi mb-3 text-xs font-medium uppercase tracking-[0.14em] text-white/50">
+                  {group.title}
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {group.names.map((name) => {
+                    const tech = techStack.find((item) => item.name === name);
+                    return tech ? <Tech key={name} name={name} image={tech.image} /> : null;
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

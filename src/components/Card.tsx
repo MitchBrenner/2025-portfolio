@@ -1,76 +1,94 @@
 import { ArrowUpRight, Github } from "lucide-react";
 import Image from "next/image";
-import React from "react";
 
-type ProjectCardProps = {
+type Project = {
   title: string;
-  image: string;
+  image?: string;
   tech: string[];
   description: string;
-  githubUrl: string;
-  liveUrl?: string;
+  githubLink?: string;
+  liveLink?: string;
+  preview?: boolean;
 };
 
-function ProjectCard({
-  title,
-  image,
-  tech,
-  description,
-  githubUrl,
-  liveUrl,
-}: ProjectCardProps) {
+function ProjectCard({ project, index }: { project: Project; index: string }) {
   return (
-    <div className="bg-[#1a2229] text-white rounded-xl overflow-hidden shadow-md border border-white/10 max-w-md relative pb-12 min-h-[530px]">
-      {/* Image */}
-      <div className="relative w-full h-48">
-        <Image src={image} alt={title} fill className="object-cover" />
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#202a33]/95 text-white shadow-[0_16px_30px_-28px_rgba(0,0,0,0.9)] transition-colors hover:border-[#a9c7d4]/50">
+      <div className="relative aspect-[16/9] overflow-hidden bg-[#30404b]">
+        {project.image ? (
+          <Image
+            src={project.image}
+            alt={`${project.title} project screenshot`}
+            fill
+            unoptimized
+            loading="eager"
+            sizes="(min-width: 1024px) 430px, (min-width: 640px) 50vw, 100vw"
+            className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.025]"
+          />
+        ) : (
+          <div
+            aria-hidden="true"
+            className={`flex h-full items-center justify-center bg-gradient-to-br ${
+              index === "04"
+                ? "from-[#405665] via-[#283943] to-[#1c2932]"
+                : "from-[#514b63] via-[#313744] to-[#1c2932]"
+            }`}
+          >
+            <span className="font-satoshi text-7xl font-black tracking-tight text-white/10">
+              {index}
+            </span>
+          </div>
+        )}
       </div>
 
-      <div className="p-5 space-y-4">
-        {/* Title */}
-        <h2 className="text-2xl font-semibold">{title}</h2>
+      <div className="flex flex-1 flex-col px-5 pb-5 pt-4">
+        <p className="font-satoshi text-[11px] font-bold uppercase tracking-[0.17em] text-[#a9c7d4]">
+          {index} / {project.preview ? "Layout preview" : "Project"}
+        </p>
+        <h3 className="font-satoshi mt-2 text-2xl font-bold tracking-tight">
+          {project.title}
+        </h3>
+        <p className="font-satoshi mt-2 line-clamp-2 text-sm leading-5 text-white/65">
+          {project.description}
+        </p>
 
-        {/* Tech bubbles */}
-        <div className="flex flex-wrap gap-2">
-          {tech.map((t) => (
-            <span
-              key={t}
-              className="text-xs bg-white/10 px-3 py-1 rounded-full border border-white/20 hover:bg-white/20 transition"
-            >
-              {t}
-            </span>
-          ))}
-        </div>
+        {project.tech.length > 0 && (
+          <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-1" aria-label="Technologies used">
+            {project.tech.slice(0, 3).map((tech) => (
+              <li key={tech} className="font-satoshi text-xs text-white/65">
+                {tech}
+              </li>
+            ))}
+          </ul>
+        )}
 
-        {/* Description */}
-        <p className="text-sm text-white/80">{description}</p>
-
-        {/* Buttons */}
-        <div className="flex gap-3 pt-2 absolute bottom-5 left-5">
-          <a
-            href={githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 text-sm rounded-lg bg-white/10 hover:bg-white/20 transition border border-white/20 flex items-center gap-2"
-          >
-            <Github />
-            GitHub
-          </a>
-
-          {liveUrl && (
+        <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-white/10 pt-4 text-sm">
+          {project.liveLink && (
             <a
-              href={liveUrl}
+              href={project.liveLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-3 py-2 text-sm rounded-lg bg-blue-500 hover:bg-blue-600 transition flex items-center gap-2 text-white border border-blue-600"
+              className="font-satoshi inline-flex min-h-8 items-center gap-1.5 font-bold text-[#d9eef5] hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
             >
-              Live Demo
-              <ArrowUpRight />
+              Live site <ArrowUpRight aria-hidden="true" size={16} />
             </a>
+          )}
+          {project.githubLink && (
+            <a
+              href={project.githubLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-satoshi inline-flex min-h-8 items-center gap-1.5 text-white/75 hover:text-white hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            >
+              <Github aria-hidden="true" size={16} /> Source
+            </a>
+          )}
+          {project.preview && (
+            <span className="font-satoshi text-xs text-white/45">Coming soon</span>
           )}
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 
