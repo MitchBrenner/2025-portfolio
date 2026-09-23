@@ -323,7 +323,9 @@ export const AnimatedThemeToggler = ({
       className={cn(className)}
       {...props}
     >
-      {isDark ? <Sun /> : <Moon />}
+      {/* Icons follow the html .dark class via CSS so the right one shows on first paint */}
+      <Sun className="hidden dark:block" />
+      <Moon className="dark:hidden" />
       <span className="sr-only">Toggle theme</span>
     </button>
   )
