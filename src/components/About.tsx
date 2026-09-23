@@ -11,7 +11,7 @@ function About() {
       <section
         id="projects"
         aria-labelledby="projects-heading"
-        className="relative px-6 pb-10 pt-14 text-white sm:px-10 sm:pb-12 sm:pt-[4.5rem] lg:px-16"
+        className="relative px-6 pb-14 pt-14 text-white sm:px-10 sm:pb-16 sm:pt-16 lg:px-16"
       >
         <div>
           <h2
@@ -28,7 +28,7 @@ function About() {
       <section
         id="skills"
         aria-labelledby="skills-heading"
-        className="relative px-6 pb-12 pt-10 text-white sm:px-10 sm:pb-16 sm:pt-12 lg:px-16"
+        className="relative px-6 pb-14 pt-14 text-white sm:px-10 sm:pb-16 sm:pt-16 lg:px-16"
       >
         <h2
           id="skills-heading"
@@ -37,7 +37,7 @@ function About() {
           Tech stack
         </h2>
 
-        <div className="relative mx-auto max-w-[1320px] overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+        <div className="relative mx-auto max-w-6xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
           <Marquee pauseOnHover className="[--duration:60s] [--gap:1.25rem] p-1">
             {techStack.slice(0, midpoint).map((tech) => (
               <Tech key={tech.name} {...tech} />
