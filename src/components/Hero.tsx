@@ -10,6 +10,7 @@ import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { MoveDown } from "lucide-react";
 import { LightRays } from "@/components/ui/light-rays";
+import { Meteors } from "@/components/ui/meteors";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -160,9 +161,20 @@ function Hero() {
         startWind();
       }}
     >
-      {/* Light Rays (behind mountains and name) */}
+      {/* Sun Rays (day only, behind mountains and name) */}
       <LightRays
-        className="z-0"
+        className="z-0 dark:hidden"
+        color="rgba(255, 205, 95, 0.35)"
+        count={3}
+        blur={22}
+        glow={false}
+        speed={16}
+        length="100vh"
+      />
+
+      {/* Aurora Light Rays (night only, behind mountains and name) */}
+      <LightRays
+        className="z-0 hidden dark:block"
         color="rgba(16, 220, 150, 0.35)"
         count={4}
         blur={40}
@@ -170,21 +182,18 @@ function Hero() {
         length="100vh"
       />
       <LightRays
-        className="z-0"
+        className="z-0 hidden dark:block"
         color="rgba(40, 150, 255, 0.35)"
         count={3}
         blur={44}
         speed={13}
         length="90vh"
       />
-      <LightRays
-        className="z-0"
-        color="rgba(150, 90, 255, 0.35)"
-        count={3}
-        blur={44}
-        speed={16}
-        length="85vh"
-      />
+
+      {/* Meteors (night only) */}
+      <div className="pointer-events-none absolute inset-0 z-0 hidden overflow-hidden dark:block">
+        <Meteors number={2} angle={75} minDelay={1} maxDelay={10} minDuration={14} maxDuration={20} />
+      </div>
 
       {/* Particles Component */}
       {init && (

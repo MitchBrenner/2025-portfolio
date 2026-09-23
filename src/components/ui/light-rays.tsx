@@ -12,6 +12,7 @@ interface LightRaysProps extends React.HTMLAttributes<HTMLDivElement> {
   blur?: number
   speed?: number
   length?: string
+  glow?: boolean
 }
 
 type LightRay = {
@@ -92,6 +93,7 @@ export function LightRays({
   blur = 36,
   speed = 14,
   length = "70vh",
+  glow = true,
   ref,
   ...props
 }: LightRaysProps) {
@@ -107,7 +109,7 @@ export function LightRays({
       ref={ref}
       className={cn(
         "pointer-events-none absolute inset-0 isolate overflow-hidden rounded-[inherit]",
-        className
+        className,
       )}
       style={
         {
@@ -120,26 +122,30 @@ export function LightRays({
       {...props}
     >
       <div className="absolute inset-0 overflow-hidden">
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-60"
-          style={
-            {
-              background:
-                "radial-gradient(circle at 20% 15%, color-mix(in srgb, var(--light-rays-color) 45%, transparent), transparent 70%)",
-            } as CSSProperties
-          }
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-60"
-          style={
-            {
-              background:
-                "radial-gradient(circle at 80% 10%, color-mix(in srgb, var(--light-rays-color) 35%, transparent), transparent 75%)",
-            } as CSSProperties
-          }
-        />
+        {glow && (
+          <>
+            <div
+              aria-hidden
+              className="absolute inset-0 opacity-60"
+              style={
+                {
+                  background:
+                    "radial-gradient(circle at 20% 15%, color-mix(in srgb, var(--light-rays-color) 45%, transparent), transparent 70%)",
+                } as CSSProperties
+              }
+            />
+            <div
+              aria-hidden
+              className="absolute inset-0 opacity-60"
+              style={
+                {
+                  background:
+                    "radial-gradient(circle at 80% 10%, color-mix(in srgb, var(--light-rays-color) 35%, transparent), transparent 75%)",
+                } as CSSProperties
+              }
+            />
+          </>
+        )}
         {rays.map((ray) => (
           <Ray key={ray.id} {...ray} />
         ))}
