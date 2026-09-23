@@ -138,3 +138,189 @@
     animation: none;
     mix-blend-mode: normal;
 }
+
+/* Hero intro: screen clears, fog banks drift off the mountains, name resolves letter by letter */
+.hero-intro-fog {
+  opacity: 0;
+  animation: hero-fog-clear 0.6s ease-out 0.05s both;
+}
+
+.hero-fog-bank {
+  opacity: 0;
+  filter: blur(22px);
+  background:
+    radial-gradient(ellipse 22% 45% at 12% 55%, currentColor, transparent 70%),
+    radial-gradient(ellipse 26% 50% at 34% 45%, currentColor, transparent 70%),
+    radial-gradient(ellipse 24% 42% at 58% 58%, currentColor, transparent 70%),
+    radial-gradient(ellipse 28% 48% at 82% 48%, currentColor, transparent 70%),
+    linear-gradient(to bottom, transparent, currentColor 45%, currentColor 60%, transparent);
+}
+
+.hero-fog-drift-left {
+  animation: hero-fog-drift-left 1.3s ease-out 0.1s both;
+}
+
+.hero-fog-drift-right {
+  animation: hero-fog-drift-right 1.4s ease-out 0.1s both;
+}
+
+.hero-fog-drift-low {
+  animation: hero-fog-drift-low 1.2s ease-out 0.1s both;
+}
+
+.hero-intro-back-mountain {
+  animation: hero-mountain-settle 2.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-intro-front-mountain {
+  transform-origin: bottom;
+  animation: hero-mountain-rise 2.2s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.hero-intro-letter {
+  animation: hero-letter-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-intro-role {
+  animation: hero-role-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
+}
+
+.hero-intro-links {
+  animation: hero-fade-in 0.7s ease-out 1.1s both;
+}
+
+.hero-intro-fade {
+  animation: hero-fade-in 0.6s ease-out 1.3s both;
+}
+
+@keyframes hero-fog-clear {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes hero-fog-drift-left {
+  from {
+    opacity: 0.95;
+    translate: 0 0;
+  }
+  25% {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 0;
+    translate: -22% -4%;
+  }
+}
+
+@keyframes hero-fog-drift-right {
+  from {
+    opacity: 0.9;
+    translate: 0 0;
+  }
+  25% {
+    opacity: 0.65;
+  }
+  to {
+    opacity: 0;
+    translate: 24% -3%;
+  }
+}
+
+@keyframes hero-fog-drift-low {
+  from {
+    opacity: 0.95;
+    translate: 0 0;
+  }
+  25% {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 0;
+    translate: 16% 6%;
+  }
+}
+
+@keyframes hero-mountain-settle {
+  from {
+    scale: 1.08;
+  }
+  to {
+    scale: 1;
+  }
+}
+
+@keyframes hero-mountain-rise {
+  from {
+    translate: 0 8%;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+@keyframes hero-letter-in {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    translate: 0 0.3em;
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    translate: 0 0;
+  }
+}
+
+@keyframes hero-role-in {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    letter-spacing: 0.4em;
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.scroll-indicator-line {
+  animation: scroll-indicator-line 2s cubic-bezier(0.65, 0, 0.35, 1) 1.9s infinite both;
+}
+
+@keyframes scroll-indicator-line {
+  from {
+    translate: 0 -100%;
+  }
+  to {
+    translate: 0 200%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-indicator-line,
+  .hero-intro-fog,
+  .hero-fog-drift-left,
+  .hero-fog-drift-right,
+  .hero-fog-drift-low,
+  .hero-intro-back-mountain,
+  .hero-intro-front-mountain,
+  .hero-intro-letter,
+  .hero-intro-role,
+  .hero-intro-links,
+  .hero-intro-fade {
+    animation: none;
+  }
+}

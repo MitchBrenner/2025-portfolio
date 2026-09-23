@@ -5,17 +5,27 @@ import type { Container } from "@tsparticles/engine";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type PointerEvent,
+} from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
-import { MoveDown } from "lucide-react";
 import { LightRays } from "@/components/ui/light-rays";
 import { Meteors } from "@/components/ui/meteors";
+import HeroLinks from "@/components/HeroLinks";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const MAX_WIND = 0.8;
+const NAME = "Mitchell Brenner";
+const NAME_INTRO_DELAY = 0.4;
+const NAME_LETTER_STAGGER = 0.025;
 
 function Hero() {
   const container = useRef<HTMLDivElement>(null);
@@ -192,13 +202,20 @@ function Hero() {
 
       {/* Meteors (night only) */}
       <div className="pointer-events-none absolute inset-0 z-0 hidden overflow-hidden dark:block">
-        <Meteors number={2} angle={75} minDelay={1} maxDelay={10} minDuration={14} maxDuration={20} />
+        <Meteors
+          number={2}
+          angle={75}
+          minDelay={1}
+          maxDelay={10}
+          minDuration={14}
+          maxDuration={20}
+        />
       </div>
 
       {/* Particles Component */}
       {init && (
         <Particles
-          className="absolute inset-0 z-5 h-full w-full overflow-hidden"
+          className="pointer-events-none absolute inset-0 z-5 h-full w-full overflow-hidden"
           options={{
             fullScreen: { enable: false },
             particles: {
@@ -233,7 +250,7 @@ function Hero() {
         />
       )}
       {/* Background Mountain */}
-      <div className="absolute -top-20 left-0 z-1 h-[90%] w-full">
+      <div className="hero-intro-back-mountain absolute -top-20 left-0 z-1 h-[90%] w-full">
         <Image
           src="/images/back-mountain.webp"
           alt=""
@@ -253,7 +270,7 @@ function Hero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="hero-intro-front-mountain object-cover"
         />
       </div>
 
@@ -262,34 +279,98 @@ function Hero() {
         id="name"
         className="name-text absolute inset-x-0 top-0 z-2 flex flex-col items-center gap-2 px-4 pt-10 text-center sm:pt-14 lg:pt-16"
       >
-        <h1 className="text-[#1a2229] dark:text-[#EBEBEB] font-satoshi font-black text-5xl md:text-6xl lg:text-8xl">
-          Mitchell Brenner
+        <h1
+          aria-label={NAME}
+          className="text-[#1a2229] dark:text-[#EBEBEB] font-satoshi font-black text-[clamp(2rem,10.5vw,3.75rem)] md:text-6xl lg:text-8xl"
+        >
+          {NAME.split(" ").map((word, wordIndex, words) => {
+            const offset = words
+              .slice(0, wordIndex)
+              .reduce((total, previous) => total + previous.length, 0);
+            return (
+              <Fragment key={word}>
+                {wordIndex > 0 && " "}
+                <span aria-hidden className="inline-block whitespace-nowrap">
+                  {word.split("").map((letter, letterIndex) => (
+                    <span
+                      key={letterIndex}
+                      className="hero-intro-letter inline-block"
+                      style={{
+                        animationDelay: `${NAME_INTRO_DELAY + (offset + letterIndex) * NAME_LETTER_STAGGER}s`,
+                      }}
+                    >
+                      {letter}
+                    </span>
+                  ))}
+                </span>
+              </Fragment>
+            );
+          })}
         </h1>
-        <p className="font-satoshi text-[11px] font-medium uppercase tracking-[0.16em] text-[#1a2229] dark:text-[#EBEBEB] sm:text-xs md:text-sm">
+        <p className="hero-intro-role font-satoshi text-[11px] font-medium uppercase tracking-[0.16em] text-[#1a2229] dark:text-[#EBEBEB] sm:text-xs md:text-sm">
           Full-Stack Software Engineer · SF
         </p>
+        <HeroLinks />
       </div>
 
       {/* Theme Toggle (sky + name only) */}
       <AnimatedThemeToggler
-        className="absolute right-4 top-4 z-40 cursor-pointer rounded-full p-2 text-[#1a2229] transition-colors hover:bg-black/5 dark:text-[#EBEBEB] dark:hover:bg-white/10 sm:right-6 sm:top-6 [&_svg]:size-5"
+        className="hero-intro-fade absolute right-4 top-4 z-40 cursor-pointer rounded-full p-2 text-[#1a2229] transition-colors hover:bg-black/5 dark:text-[#EBEBEB] dark:hover:bg-white/10 sm:right-6 sm:top-6 [&_svg]:size-5"
         aria-label="Toggle sky theme"
       />
 
-      {/* Scroll Text */}
+      {/* Intro Fog: screen clears, then fog banks drift off the mountains */}
       <div
-        className=" cursor-pointer absolute bottom-12 sm:bottom-0 p-4 z-36 w-full flex justify-center items-center scroll-text"
+        aria-hidden
+        className="hero-intro-fog pointer-events-none absolute inset-0 z-50 bg-[#EBEBEB] dark:bg-[#020305]"
+      />
+      <div
+        aria-hidden
+        className="hero-fog-bank hero-fog-drift-left pointer-events-none absolute -inset-x-1/4 top-[42%] z-8 h-[38%] text-white dark:text-[#8a9bb0]"
+      />
+      <div
+        aria-hidden
+        className="hero-fog-bank hero-fog-drift-right pointer-events-none absolute -inset-x-1/4 top-[50%] z-8 h-[34%] text-white dark:text-[#8a9bb0]"
+      />
+      <div
+        aria-hidden
+        className="hero-fog-bank hero-fog-drift-low pointer-events-none absolute -inset-x-1/4 -bottom-[6%] z-20 h-[34%] text-white dark:text-[#8a9bb0]"
+      />
+
+      {/* Scroll Indicator */}
+      <button
+        type="button"
+        aria-label="Scroll to experience"
+        className="scroll-text group absolute bottom-10 left-1/2 z-36 -translate-x-1/2 cursor-pointer p-3 sm:bottom-8"
         onClick={() => {
           document
             .getElementById("experience")
             ?.scrollIntoView({ behavior: "smooth" });
         }}
       >
-        <div className="cursor-pointer text-white flex flex-col space-y-3 items-center justify-center p-3">
-          <p className="font-satoshi -rotate-90 mr-1">scroll</p>
-          <MoveDown />
-        </div>
-      </div>
+        <span className="hero-intro-fade flex flex-col items-center gap-3 text-white/70 transition-colors duration-300 group-hover:text-white">
+          <span className="mr-[-0.3em] font-satoshi text-[10px] font-medium uppercase tracking-[0.3em] transition-[letter-spacing,margin] duration-500 group-hover:mr-[-0.45em] group-hover:tracking-[0.45em]">
+            Scroll
+          </span>
+          <span className="flex flex-col items-center">
+            <span className="relative h-12 w-px overflow-hidden bg-current/30 transition-[height] duration-500 group-hover:h-16">
+              <span className="scroll-indicator-line absolute inset-x-0 top-0 h-1/2 bg-linear-to-b from-transparent to-current" />
+            </span>
+            <svg
+              aria-hidden
+              viewBox="0 0 12 8"
+              className="-mt-[6.5px] h-2 w-3"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M1 1 6 6.5 11 1" />
+            </svg>
+          </span>
+        </span>
+      </button>
     </div>
   );
 }
