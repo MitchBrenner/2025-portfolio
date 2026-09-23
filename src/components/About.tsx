@@ -1,4 +1,4 @@
-import ProjectsCarousel from "./ProjectsCarousel";
+import ProjectsGallery from "./ProjectsGallery";
 import Tech from "./Tech";
 import { Marquee } from "./ui/marquee";
 import { techStack } from "@/lib/tech";
@@ -11,53 +11,31 @@ function About() {
       <section
         id="projects"
         aria-labelledby="projects-heading"
-        className="relative px-6 py-12 text-white sm:px-10 sm:py-16 lg:px-16"
+        className="relative px-6 pb-10 pt-14 text-white sm:px-10 sm:pb-12 sm:pt-[4.5rem] lg:px-16"
       >
         <div>
-          <div className="mx-auto mb-8 grid max-w-6xl gap-4 md:mb-9 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:items-end md:gap-16">
-            <div>
-              <p className="font-satoshi text-xs font-bold tracking-[0.2em] text-[#a9c7d4]">
-                02 / SELECTED WORK
-              </p>
-              <h2
-                id="projects-heading"
-                className="font-satoshi mt-4 text-3xl font-bold tracking-tight sm:text-4xl"
-              >
-                Built to be used.
-              </h2>
-            </div>
-            <p className="font-satoshi max-w-md text-sm leading-relaxed text-white/60 md:justify-self-end">
-              A few projects spanning web, mobile, and the space between.
-            </p>
-          </div>
+          <h2
+            id="projects-heading"
+            className="font-satoshi mx-auto mb-8 max-w-6xl text-3xl font-bold tracking-tight sm:mb-9 sm:text-4xl"
+          >
+            Projects
+          </h2>
 
-          <div className="mx-auto max-w-[1320px]">
-            <ProjectsCarousel />
-          </div>
+          <ProjectsGallery />
         </div>
       </section>
 
       <section
         id="skills"
         aria-labelledby="skills-heading"
-        className="relative px-6 py-12 text-white sm:px-10 sm:py-16 lg:px-16"
+        className="relative px-6 pb-12 pt-10 text-white sm:px-10 sm:pb-16 sm:pt-12 lg:px-16"
       >
-        <div className="mx-auto mb-8 grid max-w-6xl gap-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:items-end md:gap-16">
-          <div>
-            <p className="font-satoshi text-xs font-medium tracking-[0.2em] text-white/50">
-              03 / TOOLKIT
-            </p>
-            <h2
-              id="skills-heading"
-              className="font-satoshi mt-4 max-w-md text-3xl font-bold tracking-tight sm:text-4xl"
-            >
-              Tools I reach for.
-            </h2>
-          </div>
-          <p className="font-satoshi max-w-md text-sm leading-relaxed text-white/60 md:justify-self-end">
-            The technologies I use to take an idea from prototype to production.
-          </p>
-        </div>
+        <h2
+          id="skills-heading"
+          className="font-satoshi mx-auto mb-8 max-w-6xl text-3xl font-bold tracking-tight sm:text-4xl"
+        >
+          Tech stack
+        </h2>
 
         <div className="relative mx-auto max-w-[1320px] overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
           <Marquee pauseOnHover className="[--duration:60s] [--gap:1.25rem] p-1">
