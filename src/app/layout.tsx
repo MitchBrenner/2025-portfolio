@@ -17,9 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={satoshi.variable} suppressHydrationWarning>
       <head>
+        <meta name="theme-color" content="#EBEBEB" />
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}`,
+            __html: `try{if(localStorage.getItem("theme")==="dark"){document.documentElement.classList.add("dark");document.querySelector('meta[name="theme-color"]').setAttribute("content","#020305")}}catch(e){}`,
           }}
         />
       </head>

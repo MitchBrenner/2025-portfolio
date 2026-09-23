@@ -126,6 +126,15 @@
 }
 
 @layer base {
+  /* Safari tints its toolbar and overscroll from the root background, so match the hero sky */
+  html,
+  html body {
+    background-color: #ebebeb;
+  }
+  html.dark,
+  html.dark body {
+    background-color: #020305;
+  }
   * {
     @apply border-border outline-ring/50;
   }
@@ -142,7 +151,7 @@
 /* Hero intro: screen clears, fog banks drift off the mountains, name resolves letter by letter */
 .hero-intro-fog {
   opacity: 0;
-  animation: hero-fog-clear 0.6s ease-out 0.05s both;
+  animation: hero-fog-clear 0.6s ease-out 0.05s backwards;
 }
 
 .hero-fog-bank {
@@ -157,40 +166,40 @@
 }
 
 .hero-fog-drift-left {
-  animation: hero-fog-drift-left 1.3s ease-out 0.1s both;
+  animation: hero-fog-drift-left 1.3s ease-out 0.1s backwards;
 }
 
 .hero-fog-drift-right {
-  animation: hero-fog-drift-right 1.4s ease-out 0.1s both;
+  animation: hero-fog-drift-right 1.4s ease-out 0.1s backwards;
 }
 
 .hero-fog-drift-low {
-  animation: hero-fog-drift-low 1.2s ease-out 0.1s both;
+  animation: hero-fog-drift-low 1.2s ease-out 0.1s backwards;
 }
 
 .hero-intro-back-mountain {
-  animation: hero-mountain-settle 2.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: hero-mountain-settle 2.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 .hero-intro-front-mountain {
   transform-origin: bottom;
-  animation: hero-mountain-rise 2.2s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+  animation: hero-mountain-rise 2.2s cubic-bezier(0.22, 1, 0.36, 1) 0.1s backwards;
 }
 
 .hero-intro-letter {
-  animation: hero-letter-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: hero-letter-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 .hero-intro-role {
-  animation: hero-role-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
+  animation: hero-role-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.9s backwards;
 }
 
 .hero-intro-links {
-  animation: hero-fade-in 0.7s ease-out 1.1s both;
+  animation: hero-fade-in 0.7s ease-out 1.1s backwards;
 }
 
 .hero-intro-fade {
-  animation: hero-fade-in 0.6s ease-out 1.3s both;
+  animation: hero-fade-in 0.6s ease-out 1.3s backwards;
 }
 
 @keyframes hero-fog-clear {
@@ -306,6 +315,55 @@
   }
   to {
     translate: 0 200%;
+  }
+}
+
+/* Hero scroll parallax, driven natively by scroll position where supported
+   (smooth during iOS momentum scrolling); GSAP handles older browsers. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .front-mountain,
+    .name-text {
+      will-change: translate;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100svh;
+    }
+
+    .front-mountain {
+      animation-name: hero-front-mountain-parallax;
+    }
+
+    .name-text {
+      animation-name: hero-name-parallax;
+    }
+
+    .scroll-text {
+      animation-name: hero-scroll-hint-out;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+      animation-range: 0 min(250px, 35svh);
+    }
+  }
+}
+
+@keyframes hero-front-mountain-parallax {
+  to {
+    translate: 0 -16%;
+  }
+}
+
+@keyframes hero-name-parallax {
+  to {
+    translate: 0 60svh;
+  }
+}
+
+@keyframes hero-scroll-hint-out {
+  to {
+    opacity: 0;
   }
 }
 

@@ -18,11 +18,17 @@ import { loadSlim } from "@tsparticles/slim";
 import { LightRays } from "@/components/ui/light-rays";
 import { Meteors } from "@/components/ui/meteors";
 import HeroLinks from "@/components/HeroLinks";
+import { useIsDark } from "@/hooks/use-is-dark";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 
 gsap.registerPlugin(ScrollTrigger);
+// Mobile Safari resizes the viewport as the address bar shows/hides;
+// skipping those refreshes keeps the scroll parallax from stuttering.
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 const MAX_WIND = 0.8;
+const SKY_LIGHT = "#EBEBEB";
+const SKY_DARK = "#020305";
 const NAME = "Mitchell Brenner";
 const NAME_INTRO_DELAY = 0.4;
 const NAME_LETTER_STAGGER = 0.025;
@@ -33,6 +39,14 @@ function Hero() {
   const targetWind = useRef(0);
   const currentWind = useRef(0);
   const windFrame = useRef<number | null>(null);
+  const isDark = useIsDark();
+
+  // Keep the browser toolbar tint (Safari/Chrome) matched to the hero sky.
+  useEffect(() => {
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", isDark ? SKY_DARK : SKY_LIGHT);
+  }, [isDark]);
 
   const animateWind = useCallback(() => {
     const particles = particlesContainer.current?.particles;
@@ -97,9 +111,15 @@ function Hero() {
     () => {
       const media = gsap.matchMedia();
 
+      // Browsers with CSS scroll-driven animations run the parallax natively
+      // (see globals.css), which stays smooth during iOS momentum scrolling.
+      if (CSS.supports("animation-timeline: scroll()")) {
+        return;
+      }
+
       media.add("(prefers-reduced-motion: no-preference)", () => {
         gsap.to(".front-mountain", {
-          yPercent: -22,
+          yPercent: -16,
           ease: "none",
           scrollTrigger: {
             trigger: container.current,
@@ -109,7 +129,7 @@ function Hero() {
           },
         });
         gsap.to(".name-text", {
-          y: () => (container.current?.clientHeight ?? 0) * 0.7,
+          y: () => (container.current?.clientHeight ?? 0) * 0.6,
           ease: "none",
           scrollTrigger: {
             trigger: container.current,
@@ -171,34 +191,41 @@ function Hero() {
         startWind();
       }}
     >
-      {/* Sun Rays (day only, behind mountains and name) */}
-      <LightRays
-        className="z-0 dark:hidden"
-        color="rgba(255, 205, 95, 0.35)"
-        count={3}
-        blur={22}
-        glow={false}
-        speed={16}
-        length="100vh"
-      />
+      {/* Sun Rays (day only, behind mountains and name). Rays fade in below the top
+          edge so the sky there matches the solid color Safari paints behind its status bar. */}
+      {!isDark && (
+        <LightRays
+          className="z-0 [mask-image:linear-gradient(to_bottom,transparent,black_15%)]"
+          color="rgba(255, 205, 95, 0.35)"
+          count={3}
+          blur={22}
+          glow={false}
+          speed={16}
+          length="100vh"
+        />
+      )}
 
       {/* Aurora Light Rays (night only, behind mountains and name) */}
-      <LightRays
-        className="z-0 hidden dark:block"
-        color="rgba(16, 220, 150, 0.35)"
-        count={4}
-        blur={40}
-        speed={10}
-        length="100vh"
-      />
-      <LightRays
-        className="z-0 hidden dark:block"
-        color="rgba(40, 150, 255, 0.35)"
-        count={3}
-        blur={44}
-        speed={13}
-        length="90vh"
-      />
+      {isDark && (
+        <>
+          <LightRays
+            className="z-0 [mask-image:linear-gradient(to_bottom,transparent,black_15%)]"
+            color="rgba(16, 220, 150, 0.35)"
+            count={4}
+            blur={40}
+            speed={10}
+            length="100vh"
+          />
+          <LightRays
+            className="z-0 [mask-image:linear-gradient(to_bottom,transparent,black_15%)]"
+            color="rgba(40, 150, 255, 0.35)"
+            count={3}
+            blur={44}
+            speed={13}
+            length="90vh"
+          />
+        </>
+      )}
 
       {/* Meteors (night only) */}
       <div className="pointer-events-none absolute inset-0 z-0 hidden overflow-hidden dark:block">
@@ -218,6 +245,24 @@ function Hero() {
           className="pointer-events-none absolute inset-0 z-5 h-full w-full overflow-hidden"
           options={{
             fullScreen: { enable: false },
+            detectRetina: false,
+            fpsLimit: 60,
+            responsive: [
+              {
+                maxWidth: 640,
+                options: {
+                  particles: {
+                    number: { value: 150 },
+                    size: { value: { min: 1, max: 2.5 } },
+                    move: { speed: { min: 1, max: 4 } },
+                  },
+                },
+              },
+              {
+                maxWidth: 1024,
+                options: { particles: { number: { value: 220 } } },
+              },
+            ],
             particles: {
               color: {
                 value: "#fff",
@@ -250,26 +295,26 @@ function Hero() {
         />
       )}
       {/* Background Mountain */}
-      <div className="hero-intro-back-mountain absolute -top-20 left-0 z-1 h-[90%] w-full">
+      <div className="hero-intro-back-mountain absolute top-0 left-0 sm:-top-20 z-1 h-[90%] w-full">
         <Image
           src="/images/back-mountain.webp"
           alt=""
           fill
           priority
-          sizes="100vw"
-          className="object-cover blur-[0.6px] dark:brightness-[0.78] dark:saturate-[0.8]"
+          sizes="(max-aspect-ratio: 3/2) 135vh, 100vw"
+          className="object-cover sm:blur-[0.6px] dark:brightness-[0.78] dark:saturate-[0.8]"
         />
       </div>
 
       {/* Foreground Mountain */}
       <div className="absolute inset-x-0 bottom-0 z-7 h-[12%] bg-[#1a222b]" />
-      <div className="front-mountain absolute -bottom-[12%] left-0 z-10 h-[80%] w-full">
+      <div className="front-mountain absolute -bottom-[16%] left-0 sm:-bottom-[12%] z-10 h-[80%] w-full will-change-transform">
         <Image
           src="/images/front-mountain.webp"
           alt=""
           fill
           priority
-          sizes="100vw"
+          sizes="(max-aspect-ratio: 3/2) 120vh, 100vw"
           className="hero-intro-front-mountain object-cover"
         />
       </div>
@@ -277,7 +322,7 @@ function Hero() {
       {/* Introduction */}
       <div
         id="name"
-        className="name-text absolute inset-x-0 top-0 z-2 flex flex-col items-center gap-2 px-4 pt-10 text-center sm:pt-14 lg:pt-16"
+        className="name-text absolute inset-x-0 top-0 z-2 flex will-change-transform flex-col items-center gap-2 px-4 pt-18 text-center sm:pt-14 lg:pt-16"
       >
         <h1
           aria-label={NAME}
