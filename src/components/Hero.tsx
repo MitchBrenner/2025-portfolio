@@ -10,6 +10,7 @@ import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { MoveDown } from "lucide-react";
 import { LightRays } from "@/components/ui/light-rays";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -152,7 +153,7 @@ function Hero() {
     <div
       id="hero"
       ref={container}
-      className="relative flex h-svh w-full overflow-hidden bg-[#EBEBEB]"
+      className="relative flex h-svh w-full overflow-hidden bg-[#EBEBEB] dark:bg-[#020305]"
       onPointerMove={handlePointerMove}
       onPointerLeave={() => {
         targetWind.current = 0;
@@ -230,7 +231,7 @@ function Hero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="object-cover blur-[0.6px] dark:brightness-[0.78] dark:saturate-[0.8]"
         />
       </div>
 
@@ -252,13 +253,19 @@ function Hero() {
         id="name"
         className="name-text absolute inset-x-0 top-0 z-2 flex flex-col items-center gap-2 px-4 pt-10 text-center sm:pt-14 lg:pt-16"
       >
-        <h1 className="text-[#1a2229] font-satoshi font-black text-5xl md:text-6xl lg:text-8xl">
-          Mitch Brenner
+        <h1 className="text-[#1a2229] dark:text-[#EBEBEB] font-satoshi font-black text-5xl md:text-6xl lg:text-8xl">
+          Mitchell Brenner
         </h1>
-        <p className="font-satoshi text-[11px] font-medium uppercase tracking-[0.16em] text-[#1a2229] sm:text-xs md:text-sm">
+        <p className="font-satoshi text-[11px] font-medium uppercase tracking-[0.16em] text-[#1a2229] dark:text-[#EBEBEB] sm:text-xs md:text-sm">
           Full-Stack Software Engineer · SF
         </p>
       </div>
+
+      {/* Theme Toggle (sky + name only) */}
+      <AnimatedThemeToggler
+        className="absolute right-4 top-4 z-40 cursor-pointer rounded-full p-2 text-[#1a2229] transition-colors hover:bg-black/5 dark:text-[#EBEBEB] dark:hover:bg-white/10 sm:right-6 sm:top-6 [&_svg]:size-5"
+        aria-label="Toggle sky theme"
+      />
 
       {/* Scroll Text */}
       <div
