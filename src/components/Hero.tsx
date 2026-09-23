@@ -9,6 +9,7 @@ import { useCallback, useEffect, useRef, useState, type PointerEvent } from "rea
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { MoveDown } from "lucide-react";
+import { LightRays } from "@/components/ui/light-rays";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -86,7 +87,7 @@ function Hero() {
 
       media.add("(prefers-reduced-motion: no-preference)", () => {
         gsap.to(".front-mountain", {
-          yPercent: -14,
+          yPercent: -22,
           ease: "none",
           scrollTrigger: {
             trigger: container.current,
@@ -158,6 +159,32 @@ function Hero() {
         startWind();
       }}
     >
+      {/* Light Rays (behind mountains and name) */}
+      <LightRays
+        className="z-0"
+        color="rgba(16, 220, 150, 0.35)"
+        count={4}
+        blur={40}
+        speed={10}
+        length="100vh"
+      />
+      <LightRays
+        className="z-0"
+        color="rgba(40, 150, 255, 0.35)"
+        count={3}
+        blur={44}
+        speed={13}
+        length="90vh"
+      />
+      <LightRays
+        className="z-0"
+        color="rgba(150, 90, 255, 0.35)"
+        count={3}
+        blur={44}
+        speed={16}
+        length="85vh"
+      />
+
       {/* Particles Component */}
       {init && (
         <Particles
