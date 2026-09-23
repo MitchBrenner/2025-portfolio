@@ -43,4 +43,20 @@ export const techStack = [
     name: "Python",
     image: "/icons/python.webp",
   },
+  {
+    name: "Node.js",
+    image: "/icons/node.svg",
+  },
+  {
+    name: "Express",
+    image: "/icons/express.svg",
+  },
+  {
+    name: "Supabase",
+    image: "/icons/supabase.svg",
+  },
+  {
+    name: "FastAPI",
+    image: "/icons/fastapi.svg",
+  },
 ];

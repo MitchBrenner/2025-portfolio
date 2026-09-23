@@ -1,23 +1,11 @@
 import ProjectsCarousel from "./ProjectsCarousel";
 import Tech from "./Tech";
+import { Marquee } from "./ui/marquee";
 import { techStack } from "@/lib/tech";
 
-const toolkit = [
-  {
-    title: "Web & mobile",
-    names: ["Next.js", "React", "React Native", "Expo", "TypeScript", "Tailwind CSS"],
-  },
-  {
-    title: "Data & services",
-    names: ["PostgreSQL", "Convex", "Clerk", "Python"],
-  },
-  {
-    title: "Motion",
-    names: ["GSAP"],
-  },
-];
-
 function About() {
+  const midpoint = Math.ceil(techStack.length / 2);
+
   return (
     <div id="about" className="relative z-10 overflow-hidden">
       <section
@@ -54,7 +42,7 @@ function About() {
         aria-labelledby="skills-heading"
         className="relative px-6 py-12 text-white sm:px-10 sm:py-16 lg:px-16"
       >
-        <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-14">
+        <div className="mx-auto mb-8 grid max-w-6xl gap-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:items-end md:gap-16">
           <div>
             <p className="font-satoshi text-xs font-medium tracking-[0.2em] text-white/50">
               03 / TOOLKIT
@@ -65,30 +53,27 @@ function About() {
             >
               Tools I reach for.
             </h2>
-            <p className="font-satoshi mt-4 max-w-sm text-sm leading-relaxed text-white/60">
-              The technologies I use to take an idea from prototype to
-              production.
-            </p>
           </div>
+          <p className="font-satoshi max-w-md text-sm leading-relaxed text-white/60 md:justify-self-end">
+            The technologies I use to take an idea from prototype to production.
+          </p>
+        </div>
 
-          <div>
-            {toolkit.map((group) => (
-              <div
-                key={group.title}
-                className="border-t border-white/15 py-4 first:pt-4 last:border-b last:border-white/15"
-              >
-                <h3 className="font-satoshi mb-3 text-xs font-medium uppercase tracking-[0.14em] text-white/50">
-                  {group.title}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {group.names.map((name) => {
-                    const tech = techStack.find((item) => item.name === name);
-                    return tech ? <Tech key={name} name={name} image={tech.image} /> : null;
-                  })}
-                </div>
-              </div>
+        <div className="relative mx-auto max-w-[1320px] overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+          <Marquee pauseOnHover className="[--duration:60s] [--gap:1.25rem] p-1">
+            {techStack.slice(0, midpoint).map((tech) => (
+              <Tech key={tech.name} {...tech} />
             ))}
-          </div>
+          </Marquee>
+          <Marquee
+            reverse
+            pauseOnHover
+            className="mt-3 [--duration:56s] [--gap:1.25rem] p-1"
+          >
+            {techStack.slice(midpoint).map((tech) => (
+              <Tech key={tech.name} {...tech} />
+            ))}
+          </Marquee>
         </div>
       </section>
     </div>
