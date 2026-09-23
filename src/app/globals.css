@@ -367,7 +367,50 @@
   }
 }
 
+/* Fade content up as it scrolls into view (native scroll timeline, no JS) */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-on-scroll {
+      animation-name: reveal-up;
+      animation-timing-function: ease-out;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 40%;
+    }
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    translate: 0 48px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.ambient-glow {
+  animation: ambient-drift 24s ease-in-out infinite alternate;
+}
+
+.ambient-glow-alt {
+  animation-duration: 30s;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes ambient-drift {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 6% 8%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .ambient-glow,
   .scroll-indicator-line,
   .hero-intro-fog,
   .hero-fog-drift-left,
