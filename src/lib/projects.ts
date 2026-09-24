@@ -36,7 +36,7 @@ export const projects = [
     category: "Mobile",
     description:
       "A mobile video editor using computer vision to detect and remove watermarks.",
-    image: "/projects/logoless.png",
+    image: "/projects/logoless-screens.png",
     githubLink:
       "https://github.com/MitchBrenner/logoless-app?tab=readme-ov-file",
     tech: [
@@ -53,7 +53,7 @@ export const projects = [
     category: "Web",
     description:
       "AI-powered candidate search with natural-language queries and structured filters.",
-    image: "/projects/findly.png",
+    image: "/projects/findly-home.png",
     githubLink: "https://github.com/MitchBrenner/findly",
     liveLink: "https://useFindly.vercel.app",
     tech: [
@@ -79,7 +79,7 @@ export const projects = [
     category: "Web",
     description:
       "A team-built geocaching app where players earn points by visiting real-world landmarks around campus.",
-    image: "/projects/buckymon-go.png",
+    image: "/projects/buckymon-go-showcase.png",
     tech: [
       "Next.js",
       "React",
