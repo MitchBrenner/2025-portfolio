@@ -14,13 +14,27 @@ function ProjectsGallery() {
   return (
     <div className="mx-auto max-w-6xl">
       <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-        {visibleProjects.map((project, index) => (
-          <ProjectCard
-            key={project.title}
-            project={project}
-            index={String(index + 1).padStart(2, "0")}
-          />
-        ))}
+        {visibleProjects.map((project, index) => {
+          const card = (
+            <ProjectCard
+              key={project.title}
+              project={project}
+              index={String(index + 1).padStart(2, "0")}
+            />
+          );
+          if (index < featuredCount) return card;
+
+          // Cards revealed by "View all" fade in one after another
+          return (
+            <div
+              key={project.title}
+              className="project-expand-in"
+              style={{ animationDelay: `${(index - featuredCount) * 80}ms` }}
+            >
+              {card}
+            </div>
+          );
+        })}
       </div>
 
       {hiddenCount > 0 && (
@@ -28,7 +42,7 @@ function ProjectsGallery() {
           type="button"
           onClick={() => setShowAll((current) => !current)}
           aria-expanded={showAll}
-          className="font-satoshi mt-10 inline-flex min-h-11 items-center gap-3 rounded-full border border-white/20 px-5 text-sm font-medium text-white/80 transition-colors hover:border-white/45 hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d9eef5]"
+          className="font-satoshi mt-10 inline-flex cursor-pointer min-h-11 items-center gap-3 rounded-full border border-white/20 px-5 text-sm font-medium text-white/80 transition-colors hover:border-white/45 hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d9eef5]"
         >
           {showAll ? "Show less" : `View all (${projects.length})`}
           <span aria-hidden="true" className="text-[#a9c7d4]">

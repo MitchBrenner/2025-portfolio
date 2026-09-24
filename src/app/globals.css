@@ -410,7 +410,20 @@
   }
 }
 
+.project-expand-in {
+  animation: project-expand-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+@keyframes project-expand-in {
+  from {
+    opacity: 0;
+    translate: 0 20px;
+    scale: 0.98;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .project-expand-in,
   .ambient-glow,
   .scroll-indicator-line,
   .hero-intro-fog,

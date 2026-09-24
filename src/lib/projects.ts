@@ -14,7 +14,7 @@ export const projects = [
     category: "AI",
     description:
       "A voice AI fitness coach that builds personalized workout and diet plans through conversation.",
-    image: "/projects/coachgpt.png",
+    image: "/projects/coachgpt-home.png",
     githubLink: "https://github.com/MitchBrenner/coachGPT",
     liveLink: "https://coachgpt-ai.vercel.app",
     tech: ["Next.js", "TypeScript", "Vapi", "Clerk", "Convex", "Gemini AI"],
@@ -70,7 +70,7 @@ export const projects = [
     category: "Mobile",
     description:
       "An Instagram-style social app with a real-time feed for posts, likes, comments, and follows.",
-    image: "/projects/spotlight.png",
+    image: "/projects/spotlight-screens.png",
     githubLink: "https://github.com/MitchBrenner/spotlight-app",
     tech: ["React Native", "Expo", "TypeScript", "Clerk", "Convex"],
   },
