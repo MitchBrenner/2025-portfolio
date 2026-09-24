@@ -63,7 +63,7 @@ function Experience() {
       <div className="mx-auto w-full max-w-6xl">
         <h2
           id="experience-heading"
-          className="font-satoshi text-3xl font-bold tracking-tight sm:text-4xl"
+          className="reveal-on-scroll font-satoshi text-3xl font-bold tracking-tight sm:text-4xl"
         >
           Experience
         </h2>

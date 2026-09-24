@@ -375,7 +375,8 @@
       animation-timing-function: ease-out;
       animation-fill-mode: both;
       animation-timeline: view();
-      animation-range: cover 0% cover 40%;
+      /* --reveal-offset staggers items in the same row (e.g. project cards) */
+      animation-range: cover var(--reveal-offset, 0%) cover calc(40% + var(--reveal-offset, 0%));
     }
   }
 }

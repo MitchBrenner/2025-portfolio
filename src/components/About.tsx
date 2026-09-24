@@ -7,7 +7,7 @@ function About() {
   const midpoint = Math.ceil(techStack.length / 2);
 
   return (
-    <div id="about" className="relative z-10 overflow-hidden">
+    <div id="about" className="relative z-10 overflow-clip">
       <section
         id="projects"
         aria-labelledby="projects-heading"
@@ -16,7 +16,7 @@ function About() {
         <div>
           <h2
             id="projects-heading"
-            className="font-satoshi mx-auto mb-8 max-w-6xl text-3xl font-bold tracking-tight sm:mb-9 sm:text-4xl"
+            className="reveal-on-scroll font-satoshi mx-auto mb-8 max-w-6xl text-3xl font-bold tracking-tight sm:mb-9 sm:text-4xl"
           >
             Projects
           </h2>
@@ -32,12 +32,12 @@ function About() {
       >
         <h2
           id="skills-heading"
-          className="font-satoshi mx-auto mb-8 max-w-6xl text-3xl font-bold tracking-tight sm:text-4xl"
+          className="reveal-on-scroll font-satoshi mx-auto mb-8 max-w-6xl text-3xl font-bold tracking-tight sm:text-4xl"
         >
           Tech stack
         </h2>
 
-        <div className="relative mx-auto max-w-6xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+        <div className="reveal-on-scroll relative mx-auto max-w-6xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
           <Marquee pauseOnHover className="[--duration:60s] [--gap:1.25rem] p-1">
             {techStack.slice(0, midpoint).map((tech) => (
               <Tech key={tech.name} {...tech} />

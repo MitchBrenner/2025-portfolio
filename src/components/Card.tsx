@@ -2,7 +2,7 @@
 
 import { ArrowUpRight, Code2, Github, Trophy } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 
 type Project = {
   title: string;
@@ -36,7 +36,15 @@ function ProjectCard({ project, index }: { project: Project; index: string }) {
   }, [techOpen]);
 
   return (
-    <article className="group min-w-0 text-white">
+    <article
+      className="reveal-on-scroll group min-w-0 text-white"
+      style={
+        {
+          // Stagger cards across a row of three
+          "--reveal-offset": `${((Number(index) - 1) % 3) * 4}%`,
+        } as CSSProperties
+      }
+    >
       <div className="relative aspect-[1.9] overflow-hidden rounded-2xl border border-white/10 bg-[#26343d]">
         <Image
           src={project.image}
