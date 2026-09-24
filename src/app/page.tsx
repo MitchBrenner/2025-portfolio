@@ -5,7 +5,7 @@ import Hero from "@/components/Hero";
 
 export default function Home() {
   return (
-    <main className="">
+    <main>
       <Hero />
       <div className="relative isolate overflow-clip bg-[#1a222b] text-white">
         <div
