@@ -1,11 +1,9 @@
+import type { CSSProperties } from "react";
 import ProjectsGallery from "./ProjectsGallery";
 import Tech from "./Tech";
-import { Marquee } from "./ui/marquee";
-import { techStack } from "@/lib/tech";
+import { techGroups } from "@/lib/tech";
 
 function About() {
-  const midpoint = Math.ceil(techStack.length / 2);
-
   return (
     <div id="about" className="relative z-10 overflow-clip">
       <section
@@ -43,21 +41,28 @@ function About() {
           Tech stack
         </h2>
 
-        <div className="reveal-on-scroll relative mx-auto max-w-6xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-          <Marquee pauseOnHover className="[--duration:60s] [--gap:1.25rem] p-1">
-            {techStack.slice(0, midpoint).map((tech) => (
-              <Tech key={tech.name} {...tech} />
-            ))}
-          </Marquee>
-          <Marquee
-            reverse
-            pauseOnHover
-            className="mt-3 [--duration:56s] [--gap:1.25rem] p-1"
-          >
-            {techStack.slice(midpoint).map((tech) => (
-              <Tech key={tech.name} {...tech} />
-            ))}
-          </Marquee>
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-4">
+          {techGroups.map((group, index) => (
+            <div
+              key={group.label}
+              className="reveal-on-scroll"
+              style={
+                {
+                  // Stagger columns left to right
+                  "--reveal-offset": `${(index % 4) * 4}%`,
+                } as CSSProperties
+              }
+            >
+              <h3 className="font-satoshi text-xs font-semibold uppercase tracking-[0.18em] text-white/45">
+                {group.label}
+              </h3>
+              <ul className="mt-4 space-y-1">
+                {group.items.map((tech) => (
+                  <Tech key={tech.name} {...tech} />
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </section>
     </div>
