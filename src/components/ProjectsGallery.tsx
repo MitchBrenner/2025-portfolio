@@ -30,7 +30,7 @@ function ProjectsGallery() {
           aria-expanded={showAll}
           className="font-satoshi mt-10 inline-flex min-h-11 items-center gap-3 rounded-full border border-white/20 px-5 text-sm font-medium text-white/80 transition-colors hover:border-white/45 hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d9eef5]"
         >
-          {showAll ? "Show selected work" : `View all projects (${projects.length})`}
+          {showAll ? "Show less" : `View all (${projects.length})`}
           <span aria-hidden="true" className="text-[#a9c7d4]">
             {showAll ? "−" : "+"}
           </span>

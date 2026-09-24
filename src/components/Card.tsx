@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight, Code2, Github } from "lucide-react";
+import { ArrowUpRight, Code2, Github, Trophy } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useId, useRef, useState } from "react";
 
@@ -8,8 +8,9 @@ type Project = {
   title: string;
   category: string;
   image: string;
-  tech: string[];
+  tech?: string[];
   description: string;
+  award?: { title: string; event: string };
   githubLink?: string;
   liveLink?: string;
 };
@@ -30,7 +31,8 @@ function ProjectCard({ project, index }: { project: Project; index: string }) {
     };
 
     document.addEventListener("pointerdown", closeOnOutsideClick);
-    return () => document.removeEventListener("pointerdown", closeOnOutsideClick);
+    return () =>
+      document.removeEventListener("pointerdown", closeOnOutsideClick);
   }, [techOpen]);
 
   return (
@@ -47,6 +49,12 @@ function ProjectCard({ project, index }: { project: Project; index: string }) {
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#10191f]/55 via-transparent to-transparent"
         />
+        {project.award && (
+          <span className="font-satoshi absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-amber-300/40 bg-[#10191f]/75 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-amber-200 shadow-[0_4px_14px_rgba(0,0,0,0.35)] backdrop-blur-sm">
+            <Trophy aria-hidden="true" size={12} strokeWidth={2.25} />
+            Award winner
+          </span>
+        )}
         <span className="font-satoshi absolute bottom-3 left-4 text-xs font-semibold tracking-[0.18em] text-white/90">
           {index} / {project.category.toUpperCase()}
         </span>
@@ -86,68 +94,80 @@ function ProjectCard({ project, index }: { project: Project; index: string }) {
           </a>
         )}
 
-        <div
-          ref={techRef}
-          className="relative"
-          onPointerEnter={(event) => {
-            if (event.pointerType === "mouse") setTechOpen(true);
-          }}
-          onPointerLeave={(event) => {
-            if (event.pointerType === "mouse") setTechOpen(false);
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Escape") setTechOpen(false);
-          }}
-          onBlur={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget)) {
-              setTechOpen(false);
-            }
-          }}
-        >
-          <button
-            type="button"
-            aria-expanded={techOpen}
-            aria-controls={techOpen ? techId : undefined}
-            onPointerDown={(event) => {
-              pointerTypeRef.current = event.pointerType;
+        {project.tech && project.tech.length > 0 && (
+          <div
+            ref={techRef}
+            className="relative"
+            onPointerEnter={(event) => {
+              if (event.pointerType === "mouse") setTechOpen(true);
             }}
-            onClick={(event) => {
-              if (event.detail === 0 || pointerTypeRef.current !== "mouse") {
-                setTechOpen((open) => !open);
-              } else {
-                setTechOpen(true);
+            onPointerLeave={(event) => {
+              if (event.pointerType === "mouse") setTechOpen(false);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") setTechOpen(false);
+            }}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) {
+                setTechOpen(false);
               }
             }}
-            className="inline-flex items-center gap-1.5 text-[#b8d3df] transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d9eef5]"
           >
-            <Code2 aria-hidden="true" size={14} /> Tech
-          </button>
+            <button
+              type="button"
+              aria-expanded={techOpen}
+              aria-controls={techOpen ? techId : undefined}
+              onPointerDown={(event) => {
+                pointerTypeRef.current = event.pointerType;
+              }}
+              onClick={(event) => {
+                if (event.detail === 0 || pointerTypeRef.current !== "mouse") {
+                  setTechOpen((open) => !open);
+                } else {
+                  setTechOpen(true);
+                }
+              }}
+              className="inline-flex items-center gap-1.5 text-[#b8d3df] transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d9eef5]"
+            >
+              <Code2 aria-hidden="true" size={14} /> Tech
+            </button>
 
-          {techOpen && (
-            <div className="absolute bottom-full left-0 z-20 w-56 max-w-[calc(100vw-3rem)] pb-2">
-              <div
-                id={techId}
-                role="region"
-                aria-label={`Technologies used for ${project.title}`}
-                className="rounded-xl border border-white/15 bg-[#293641] p-4 shadow-[0_16px_35px_rgba(0,0,0,0.4)]"
-              >
-                <p className="text-[10px] font-bold uppercase tracking-[0.17em] text-white/45">
-                  Built with
-                </p>
-                <ul className="mt-2 flex flex-wrap gap-1.5">
-                  {project.tech.map((tech) => (
-                    <li
-                      key={tech}
-                      className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-xs font-normal text-white/85"
-                    >
-                      {tech}
-                    </li>
-                  ))}
-                </ul>
+            {techOpen && (
+              <div className="absolute bottom-full left-0 z-20 w-56 max-w-[calc(100vw-3rem)] pb-2">
+                <div
+                  id={techId}
+                  role="region"
+                  aria-label={`Technologies used for ${project.title}`}
+                  className="rounded-xl border border-white/15 bg-[#293641] p-4 shadow-[0_16px_35px_rgba(0,0,0,0.4)]"
+                >
+                  <p className="text-[10px] font-bold uppercase tracking-[0.17em] text-white/45">
+                    Built with
+                  </p>
+                  <ul className="mt-2 flex flex-wrap gap-1.5">
+                    {project.tech?.map((tech) => (
+                      <li
+                        key={tech}
+                        className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-xs font-normal text-white/85"
+                      >
+                        {tech}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
+        {project.award && (
+          <span
+            title={`${project.award.title}, ${project.award.event}`}
+            className="inline-flex items-center gap-1.5 text-amber-200/90"
+          >
+            <Trophy aria-hidden="true" size={13} className="shrink-0" />
+            {project.award.title}
+            <span className="sr-only">, {project.award.event}</span>
+          </span>
+        )}
       </div>
     </article>
   );
