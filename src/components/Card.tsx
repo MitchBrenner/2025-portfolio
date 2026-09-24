@@ -2,6 +2,7 @@
 
 import { ArrowUpRight, Code2, Github, Trophy } from "lucide-react";
 import Image from "next/image";
+import { MagicCard } from "./ui/magic-card";
 import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 
 type Project = {
@@ -45,28 +46,35 @@ function ProjectCard({ project, index }: { project: Project; index: string }) {
         } as CSSProperties
       }
     >
-      <div className="relative aspect-[1.9] overflow-hidden rounded-2xl border border-white/10 bg-[#26343d]">
-        <Image
-          src={project.image}
-          alt={`${project.title} project screenshot`}
-          fill
-          sizes="(min-width: 1024px) 370px, (min-width: 640px) 50vw, 100vw"
-          className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.035]"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#10191f]/55 via-transparent to-transparent"
-        />
-        {project.award && (
-          <span className="font-satoshi absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-amber-300/40 bg-[#10191f]/75 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-amber-200 shadow-[0_4px_14px_rgba(0,0,0,0.35)] backdrop-blur-sm">
-            <Trophy aria-hidden="true" size={12} strokeWidth={2.25} />
-            Award winner
+      <MagicCard
+        className="rounded-2xl [--color-background:#26343d] [--color-border:rgb(255_255_255/0.1)]"
+        gradientSize={240}
+        gradientFrom="#9ac8d6"
+        gradientTo="#7c6cff"
+      >
+        <div className="relative aspect-[1.9] overflow-hidden rounded-[15px] bg-[#26343d]">
+          <Image
+            src={project.image}
+            alt={`${project.title} project screenshot`}
+            fill
+            sizes="(min-width: 1024px) 370px, (min-width: 640px) 50vw, 100vw"
+            className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.035]"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#10191f]/55 via-transparent to-transparent"
+          />
+          {project.award && (
+            <span className="font-satoshi absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-amber-300/40 bg-[#10191f]/75 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-amber-200 shadow-[0_4px_14px_rgba(0,0,0,0.35)] backdrop-blur-sm">
+              <Trophy aria-hidden="true" size={12} strokeWidth={2.25} />
+              Award winner
+            </span>
+          )}
+          <span className="font-satoshi absolute bottom-3 left-4 text-xs font-semibold tracking-[0.18em] text-white/90">
+            {index} / {project.category.toUpperCase()}
           </span>
-        )}
-        <span className="font-satoshi absolute bottom-3 left-4 text-xs font-semibold tracking-[0.18em] text-white/90">
-          {index} / {project.category.toUpperCase()}
-        </span>
-      </div>
+        </div>
+      </MagicCard>
 
       <div className="mt-4 flex items-start justify-between gap-4">
         <div className="min-w-0">
