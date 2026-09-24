@@ -314,11 +314,24 @@
     }
 
     .front-mountain {
+      --mountain-parallax: -16%;
       animation-name: hero-front-mountain-parallax;
     }
 
     .name-text {
+      --name-parallax: 60svh;
       animation-name: hero-name-parallax;
+    }
+
+    /* Desktop moves a bit faster */
+    @media (min-width: 768px) {
+      .front-mountain {
+        --mountain-parallax: -21%;
+      }
+
+      .name-text {
+        --name-parallax: 75svh;
+      }
     }
 
     .scroll-text {
@@ -333,13 +346,13 @@
 
 @keyframes hero-front-mountain-parallax {
   to {
-    translate: 0 -16%;
+    translate: 0 var(--mountain-parallax);
   }
 }
 
 @keyframes hero-name-parallax {
   to {
-    translate: 0 60svh;
+    translate: 0 var(--name-parallax);
   }
 }
 

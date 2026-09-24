@@ -121,17 +121,21 @@ function Hero() {
 
       media.add("(prefers-reduced-motion: no-preference)", () => {
         gsap.to(".front-mountain", {
-          yPercent: -16,
+          // Desktop moves a bit faster (matches the CSS scroll-driven version)
+          yPercent: () => (window.innerWidth >= 768 ? -21 : -16),
           ease: "none",
           scrollTrigger: {
             trigger: container.current,
             start: "top top",
             end: "bottom top",
             scrub: true,
+            invalidateOnRefresh: true,
           },
         });
         gsap.to(".name-text", {
-          y: () => (container.current?.clientHeight ?? 0) * 0.6,
+          y: () =>
+            (container.current?.clientHeight ?? 0) *
+            (window.innerWidth >= 768 ? 0.75 : 0.6),
           ease: "none",
           scrollTrigger: {
             trigger: container.current,
