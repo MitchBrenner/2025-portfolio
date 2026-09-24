@@ -1,7 +1,7 @@
 "use client";
 
 import { useGSAP } from "@gsap/react";
-import type { Container } from "@tsparticles/engine";
+import type { Container, Engine, ISourceOptions } from "@tsparticles/engine";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import Image from "next/image";
@@ -10,10 +10,9 @@ import {
   useCallback,
   useEffect,
   useRef,
-  useState,
   type PointerEvent,
 } from "react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
+import Particles, { ParticlesProvider } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { LightRays } from "@/components/ui/light-rays";
 import { Meteors } from "@/components/ui/meteors";
@@ -33,6 +32,55 @@ const SKY_DARK = "#020305";
 const NAME = "Mitchell Brenner";
 const NAME_INTRO_DELAY = 0.4;
 const NAME_LETTER_STAGGER = 0.025;
+
+// Defined once so the snow isn't restarted on every re-render
+const SNOW_OPTIONS: ISourceOptions = {
+  fullScreen: { enable: false },
+  detectRetina: false,
+  fpsLimit: 60,
+  responsive: [
+    {
+      maxWidth: 640,
+      options: {
+        particles: {
+          number: { value: 150 },
+          size: { value: { min: 1, max: 2.5 } },
+          move: { speed: { min: 1, max: 4 } },
+        },
+      },
+    },
+    {
+      maxWidth: 1024,
+      options: { particles: { number: { value: 220 } } },
+    },
+  ],
+  particles: {
+    color: {
+      value: "#fff",
+    },
+    number: {
+      value: 500,
+    },
+    opacity: {
+      value: { min: 0.3, max: 1 },
+    },
+    shape: {
+      type: "circle",
+    },
+    size: {
+      value: { min: 1, max: 5 },
+    },
+    move: {
+      direction: "bottom",
+      enable: true,
+      speed: { min: 2, max: 7 },
+      straight: true,
+    },
+  },
+};
+
+// Loads only the particle features the snow needs; must stay stable across renders
+const loadSnowEngine = (engine: Engine) => loadSlim(engine);
 
 function Hero() {
   const container = useRef<HTMLDivElement>(null);
@@ -162,22 +210,7 @@ function Hero() {
     { scope: container },
   );
 
-  const [init, setInit] = useState(false);
-
-  // this should be run only once per application lifetime
   useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
-      // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-      // starting from v2 you can add only the features you need reducing the bundle size
-      //await loadAll(engine);
-      //await loadFull(engine);
-      await loadSlim(engine);
-      //await loadBasic(engine);
-    }).then(() => {
-      setInit(true);
-    });
-
     return () => {
       if (windFrame.current !== null) {
         cancelAnimationFrame(windFrame.current);
@@ -185,6 +218,14 @@ function Hero() {
       particlesContainer.current = null;
     };
   }, []);
+
+  const handleParticlesLoaded = useCallback(
+    async (loaded?: Container) => {
+      particlesContainer.current = loaded ?? null;
+      startWind();
+    },
+    [startWind],
+  );
 
   return (
     <div
@@ -248,59 +289,15 @@ function Hero() {
       )}
 
       {/* Particles Component */}
-      {init && !reduceMotion && (
-        <Particles
-          className="pointer-events-none absolute inset-0 z-5 h-full w-full overflow-hidden dark:opacity-55"
-          options={{
-            fullScreen: { enable: false },
-            detectRetina: false,
-            fpsLimit: 60,
-            responsive: [
-              {
-                maxWidth: 640,
-                options: {
-                  particles: {
-                    number: { value: 150 },
-                    size: { value: { min: 1, max: 2.5 } },
-                    move: { speed: { min: 1, max: 4 } },
-                  },
-                },
-              },
-              {
-                maxWidth: 1024,
-                options: { particles: { number: { value: 220 } } },
-              },
-            ],
-            particles: {
-              color: {
-                value: "#fff",
-              },
-              number: {
-                value: 500,
-              },
-              opacity: {
-                value: { min: 0.3, max: 1 },
-              },
-              shape: {
-                type: "circle",
-              },
-              size: {
-                value: { min: 1, max: 5 },
-              },
-              move: {
-                direction: "bottom",
-                enable: true,
-                speed: { min: 2, max: 7 },
-                straight: true,
-              },
-            },
-          }}
-          id="tsparticles"
-          particlesLoaded={async (loaded) => {
-            particlesContainer.current = loaded ?? null;
-            startWind();
-          }}
-        />
+      {!reduceMotion && (
+        <ParticlesProvider init={loadSnowEngine}>
+          <Particles
+            className="pointer-events-none absolute inset-0 z-5 h-full w-full overflow-hidden dark:opacity-55"
+            options={SNOW_OPTIONS}
+            id="tsparticles"
+            particlesLoaded={handleParticlesLoaded}
+          />
+        </ParticlesProvider>
       )}
       {/* Background Mountain */}
       <div className="hero-intro-back-mountain absolute top-0 left-0 sm:-top-20 z-1 h-[90%] w-full">
