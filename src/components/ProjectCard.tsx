@@ -3,18 +3,8 @@
 import { ArrowUpRight, Code2, Github, Trophy } from "lucide-react";
 import Image from "next/image";
 import { MagicCard } from "./ui/magic-card";
+import type { Project } from "@/lib/projects";
 import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
-
-type Project = {
-  title: string;
-  category: string;
-  image: string;
-  tech?: string[];
-  description: string;
-  award?: { title: string; event: string };
-  githubLink?: string;
-  liveLink?: string;
-};
 
 function ProjectCard({ project, index }: { project: Project; index: string }) {
   // Clicking the screenshot opens the live site, or the repo if there isn't one
@@ -103,7 +93,7 @@ function ProjectCard({ project, index }: { project: Project; index: string }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`Visit ${project.title} live site`}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 text-white/80 transition-colors hover:border-[#d9eef5] hover:bg-[#d9eef5] hover:text-[#1a222b] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d9eef5]"
+            className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full border after:absolute after:-inset-1 after:content-['']  border-white/20 text-white/80 transition-colors hover:border-mist hover:bg-mist hover:text-page focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mist"
           >
             <ArrowUpRight aria-hidden="true" size={18} />
           </a>
@@ -116,7 +106,8 @@ function ProjectCard({ project, index }: { project: Project; index: string }) {
             href={project.githubLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-[#b8d3df] transition-colors hover:text-white hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d9eef5]"
+            aria-label={`Source code for ${project.title}`}
+            className="relative inline-flex items-center gap-1.5 text-[#b8d3df] after:absolute after:-inset-x-2 after:-inset-y-3.5 after:content-[''] transition-colors hover:text-white hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mist"
           >
             <Github aria-hidden="true" size={14} /> Source code
           </a>
@@ -155,7 +146,8 @@ function ProjectCard({ project, index }: { project: Project; index: string }) {
                   setTechOpen(true);
                 }
               }}
-              className="inline-flex cursor-pointer items-center gap-1.5 text-[#b8d3df] transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d9eef5]"
+              aria-label={`Tech used in ${project.title}`}
+              className="relative inline-flex cursor-pointer items-center gap-1.5 text-[#b8d3df] after:absolute after:-inset-x-2 after:-inset-y-3.5 after:content-[''] transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mist"
             >
               <Code2 aria-hidden="true" size={14} /> Tech
             </button>

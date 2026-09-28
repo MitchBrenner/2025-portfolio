@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ProjectCard from "./Card";
+import ProjectCard from "./ProjectCard";
 import { projects } from "@/lib/projects";
 
 const featuredCount = 3;
@@ -42,7 +42,7 @@ function ProjectsGallery() {
           type="button"
           onClick={() => setShowAll((current) => !current)}
           aria-expanded={showAll}
-          className="font-satoshi mt-10 inline-flex cursor-pointer min-h-11 items-center gap-3 rounded-full border border-white/20 px-5 text-sm font-medium text-white/80 transition-colors hover:border-white/45 hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d9eef5]"
+          className="font-satoshi mt-10 inline-flex cursor-pointer min-h-11 items-center gap-3 rounded-full border border-white/20 px-5 text-sm font-medium text-white/80 transition-colors hover:border-white/45 hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mist"
         >
           {showAll ? "Show less" : `View all (${projects.length})`}
           <span aria-hidden="true" className="text-[#a9c7d4]">

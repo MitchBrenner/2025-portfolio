@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import satoshi from "../../public/fonts/satoshi";
+import { siteUrl } from "@/lib/site";
 
 const title = "Mitchell Brenner";
 const description =
   "Full-stack software engineer in San Francisco building fast, well-crafted web and mobile products.";
 
 export const metadata: Metadata = {
-  // Set NEXT_PUBLIC_SITE_URL to your custom domain; on Vercel it's inferred otherwise
-  metadataBase: process.env.NEXT_PUBLIC_SITE_URL
-    ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
-    : undefined,
+  metadataBase: new URL(siteUrl),
   title,
   description,
   authors: [{ name: "Mitchell Brenner" }],

@@ -1,6 +1,19 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
+/* Phones turned sideways (short, wide screens) */
+@custom-variant short-landscape (@media (orientation: landscape) and (max-height: 500px));
+
+@theme {
+  /* Site palette */
+  --color-page: #1a222b; /* dark sections background */
+  --color-ink: #1a2229; /* hero text on the day sky */
+  --color-accent: #9ac8d6; /* teal accent (dots, icons) */
+  --color-mist: #d9eef5; /* light buttons and focus rings */
+  --color-daylight: #ebebeb; /* day sky */
+  --color-midnight: #020305; /* night sky */
+  --color-fog: #8a9bb0; /* night fog banks */
+}
 
 @theme inline {
   --color-background: var(--background);

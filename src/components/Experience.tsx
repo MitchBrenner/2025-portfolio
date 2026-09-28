@@ -1,4 +1,5 @@
 import Image from "next/image";
+import SectionHeading from "./SectionHeading";
 
 type Entry = {
   name: string;
@@ -61,12 +62,7 @@ function Experience() {
       </div>
 
       <div className="mx-auto w-full max-w-6xl">
-        <h2
-          id="experience-heading"
-          className="reveal-on-scroll font-satoshi text-3xl font-bold tracking-tight sm:text-4xl"
-        >
-          Experience
-        </h2>
+        <SectionHeading id="experience-heading">Experience</SectionHeading>
 
         <ol className="mt-8 sm:mt-9">
           {entries.map((entry, index) => (
@@ -103,7 +99,7 @@ function Experience() {
                     <span
                       aria-hidden="true"
                       className={`h-1.5 w-1.5 rounded-full ${
-                        entry.current ? "bg-[#9ac8d6]" : "bg-white/25"
+                        entry.current ? "bg-accent" : "bg-white/25"
                       }`}
                     />
                     {entry.date}
@@ -125,7 +121,7 @@ function Experience() {
                         >
                           <span
                             aria-hidden="true"
-                            className="mt-[0.7em] h-px w-3 shrink-0 bg-[#9ac8d6]/70"
+                            className="mt-[0.7em] h-px w-3 shrink-0 bg-accent/70"
                           />
                           {highlight}
                         </li>

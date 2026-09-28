@@ -231,7 +231,7 @@ function Hero() {
     <div
       id="hero"
       ref={container}
-      className="relative flex h-svh w-full overflow-hidden bg-[#EBEBEB] dark:bg-[#020305]"
+      className="relative flex h-svh w-full overflow-hidden bg-daylight dark:bg-midnight"
       onPointerMove={handlePointerMove}
       onPointerLeave={() => {
         targetWind.current = 0;
@@ -300,26 +300,26 @@ function Hero() {
         </ParticlesProvider>
       )}
       {/* Background Mountain */}
-      <div className="hero-intro-back-mountain absolute top-0 left-0 sm:-top-20 z-1 h-[90%] w-full">
+      <div className="hero-intro-back-mountain absolute top-0 left-0 sm:-top-20 z-1 h-[90%] w-full short-landscape:h-[130%]">
         <Image
           src="/images/back-mountain.webp"
           alt=""
           fill
           priority
-          sizes="(max-aspect-ratio: 3/2) 135vh, 100vw"
+          sizes="(max-width: 640px) 850px, (max-aspect-ratio: 3/2) 135vh, 100vw"
           className="object-cover sm:blur-[0.6px] dark:brightness-[0.78] dark:saturate-[0.8]"
         />
       </div>
 
       {/* Foreground Mountain */}
-      <div className="absolute inset-x-0 bottom-0 z-7 h-[12%] bg-[#1a222b]" />
+      <div className="absolute inset-x-0 bottom-0 z-7 h-[12%] bg-page" />
       <div className="front-mountain absolute -bottom-[16%] left-0 sm:-bottom-[12%] z-10 h-[80%] w-full will-change-transform">
         <Image
           src="/images/front-mountain.webp"
           alt=""
           fill
           priority
-          sizes="(max-aspect-ratio: 3/2) 120vh, 100vw"
+          sizes="(max-width: 640px) 850px, (max-aspect-ratio: 3/2) 120vh, 100vw"
           className="hero-intro-front-mountain object-cover"
         />
       </div>
@@ -331,7 +331,7 @@ function Hero() {
       >
         <h1
           aria-label={NAME}
-          className="text-[#1a2229] dark:text-[#EBEBEB] font-satoshi font-black text-[clamp(2rem,10.5vw,3.75rem)] md:text-6xl lg:text-8xl"
+          className="text-ink dark:text-daylight font-satoshi font-black text-[clamp(2rem,10.5vw,3.75rem)] md:text-6xl lg:text-8xl"
         >
           {NAME.split(" ").map((word, wordIndex, words) => {
             const offset = words
@@ -357,7 +357,7 @@ function Hero() {
             );
           })}
         </h1>
-        <p className="hero-intro-role font-satoshi text-[11px] font-medium uppercase tracking-[0.16em] text-[#1a2229] dark:text-[#EBEBEB] sm:text-xs md:text-sm">
+        <p className="hero-intro-role font-satoshi text-[11px] font-medium uppercase tracking-[0.16em] text-ink dark:text-daylight sm:text-xs md:text-sm">
           Full-Stack Software Engineer · SF
         </p>
         <HeroLinks />
@@ -365,26 +365,26 @@ function Hero() {
 
       {/* Theme Toggle (sky + name only) */}
       <AnimatedThemeToggler
-        className="hero-intro-fade absolute right-4 top-4 z-40 cursor-pointer rounded-full p-2 text-[#1a2229] transition-colors hover:bg-black/5 dark:text-[#EBEBEB] dark:hover:bg-white/10 sm:right-6 sm:top-6 [&_svg]:size-5"
+        className="hero-intro-fade absolute right-4 top-4 z-40 cursor-pointer rounded-full p-2 after:absolute after:-inset-1 after:content-[''] text-ink transition-colors hover:bg-black/5 dark:text-daylight dark:hover:bg-white/10 sm:right-6 sm:top-6 [&_svg]:size-5"
         aria-label="Toggle sky theme"
       />
 
       {/* Intro Fog: screen clears, then fog banks drift off the mountains */}
       <div
         aria-hidden
-        className="hero-intro-fog pointer-events-none absolute inset-0 z-50 bg-[#EBEBEB] dark:bg-[#020305]"
+        className="hero-intro-fog pointer-events-none absolute inset-0 z-50 bg-daylight dark:bg-midnight"
       />
       <div
         aria-hidden
-        className="hero-fog-bank hero-fog-drift-left pointer-events-none absolute -inset-x-1/4 top-[42%] z-8 h-[38%] text-white dark:text-[#8a9bb0]"
+        className="hero-fog-bank hero-fog-drift-left pointer-events-none absolute -inset-x-1/4 top-[42%] z-8 h-[38%] text-white dark:text-fog"
       />
       <div
         aria-hidden
-        className="hero-fog-bank hero-fog-drift-right pointer-events-none absolute -inset-x-1/4 top-[50%] z-8 h-[34%] text-white dark:text-[#8a9bb0]"
+        className="hero-fog-bank hero-fog-drift-right pointer-events-none absolute -inset-x-1/4 top-[50%] z-8 h-[34%] text-white dark:text-fog"
       />
       <div
         aria-hidden
-        className="hero-fog-bank hero-fog-drift-low pointer-events-none absolute -inset-x-1/4 -bottom-[6%] z-20 h-[34%] text-white dark:text-[#8a9bb0]"
+        className="hero-fog-bank hero-fog-drift-low pointer-events-none absolute -inset-x-1/4 -bottom-[6%] z-20 h-[34%] text-white dark:text-fog"
       />
 
       {/* Scroll Indicator */}

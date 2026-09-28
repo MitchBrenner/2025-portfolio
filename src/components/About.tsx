@@ -1,71 +1,59 @@
-import type { CSSProperties } from "react";
-import ProjectsGallery from "./ProjectsGallery";
-import Tech from "./Tech";
-import { techGroups } from "@/lib/tech";
+import Image from "next/image";
+import SectionHeading from "./SectionHeading";
 
 function About() {
   return (
-    <div id="about" className="relative z-10 overflow-clip">
-      <section
-        id="projects"
-        aria-labelledby="projects-heading"
-        className="relative px-6 pb-14 pt-14 text-white sm:px-10 sm:pb-16 sm:pt-16 lg:px-16"
-      >
-        {/* Ambient glow (left side, alternating with Experience's right-side glow) */}
-        <div
-          aria-hidden="true"
-          className="ambient-glow pointer-events-none absolute -left-[12%] top-[25%] -z-10 h-[42rem] w-[42rem] bg-[radial-gradient(circle,rgb(124_108_255/0.13),transparent_65%)]"
-        />
+    <section
+      id="about-me"
+      aria-labelledby="about-heading"
+      className="relative z-10 px-6 pb-16 pt-14 text-white sm:px-10 sm:pb-24 sm:pt-16 lg:px-16"
+    >
+      {/* Ambient glow (bottom right, continuing the zigzag down the page) */}
+      <div
+        aria-hidden="true"
+        className="ambient-glow ambient-glow-alt pointer-events-none absolute -bottom-[10%] -right-[10%] -z-10 h-[40rem] w-[40rem] bg-[radial-gradient(circle,rgb(154_200_214/0.11),transparent_65%)]"
+      />
 
-        <div>
-          <h2
-            id="projects-heading"
-            className="reveal-on-scroll font-satoshi mx-auto mb-8 max-w-6xl text-3xl font-bold tracking-tight sm:mb-9 sm:text-4xl"
-          >
-            Projects
-          </h2>
-
-          <ProjectsGallery />
-        </div>
-      </section>
-
-      <section
-        id="skills"
-        aria-labelledby="skills-heading"
-        className="relative px-6 pb-14 pt-14 text-white sm:px-10 sm:pb-16 sm:pt-16 lg:px-16"
-      >
-        <h2
-          id="skills-heading"
-          className="reveal-on-scroll font-satoshi mx-auto mb-8 max-w-6xl text-3xl font-bold tracking-tight sm:text-4xl"
+      <div className="reveal-on-scroll mx-auto max-w-6xl">
+        <SectionHeading
+          id="about-heading"
+          reveal={false}
+          className="mb-8 sm:mb-9"
         >
-          Tech stack
-        </h2>
+          About
+        </SectionHeading>
 
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-4">
-          {techGroups.map((group, index) => (
-            <div
-              key={group.label}
-              className="reveal-on-scroll"
-              style={
-                {
-                  // Stagger columns left to right
-                  "--reveal-offset": `${(index % 4) * 4}%`,
-                } as CSSProperties
-              }
-            >
-              <h3 className="font-satoshi text-xs font-semibold uppercase tracking-[0.18em] text-white/45">
-                {group.label}
-              </h3>
-              <ul className="mt-4 space-y-1">
-                {group.items.map((tech) => (
-                  <Tech key={tech.name} {...tech} />
-                ))}
-              </ul>
-            </div>
-          ))}
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-10">
+          <div className="relative hidden aspect-[4/5] w-40 shrink-0 sm:block overflow-hidden rounded-2xl border border-white/10 sm:w-48">
+            <Image
+              src="/images/about-snowboarding.jpg"
+              alt="Mitchell snowboarding in fresh powder"
+              fill
+              sizes="192px"
+              className="object-cover"
+            />
+          </div>
+
+          <div className="font-satoshi min-w-0 flex-1 space-y-4 text-base leading-relaxed text-white/70 sm:text-lg sm:leading-8">
+            <p>
+              I&rsquo;m a full-stack engineer in San Francisco, building
+              software at OrderIQ that helps restaurants run and grow.
+            </p>
+            <p>
+              I care a lot about how a product feels to use. Whether I&rsquo;m
+              on the front end or deeper in the stack, I like making complex
+              things feel simple, and I notice the small details most people
+              skip.
+            </p>
+            <p>
+              Outside of work, I&rsquo;m usually lifting, hiking, camping, or
+              snowboarding. I recently got into running and chess, where
+              I&rsquo;m regularly getting humbled.
+            </p>
+          </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }
 

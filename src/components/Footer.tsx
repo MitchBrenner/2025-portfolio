@@ -1,36 +1,22 @@
 "use client";
 
 import { Check, FileText, Github, Linkedin, Mail } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { useCopyEmail } from "@/hooks/use-copy-email";
 import { socialLinks } from "@/lib/links";
 
 const iconLinkClassName =
-  "flex size-9 cursor-pointer items-center justify-center rounded-full text-white/55 transition-colors hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d9eef5]";
+  "relative flex size-9 cursor-pointer items-center justify-center rounded-full text-white/55 transition-colors hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mist after:absolute after:-inset-1 after:content-['']";
 
-function Contact() {
-  const [copied, setCopied] = useState(false);
-  const copiedTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+// `buildYear` comes from the server so the first render matches the static
+// HTML; the effect then corrects it if the site hasn't been rebuilt this year
+function Footer({ buildYear }: { buildYear: number }) {
+  const { copied, copyEmail } = useCopyEmail();
+  const [year, setYear] = useState(buildYear);
 
   useEffect(() => {
-    return () => {
-      if (copiedTimeout.current) {
-        clearTimeout(copiedTimeout.current);
-      }
-    };
+    setYear(new Date().getFullYear());
   }, []);
-
-  const copyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(socialLinks.email);
-      setCopied(true);
-      if (copiedTimeout.current) {
-        clearTimeout(copiedTimeout.current);
-      }
-      copiedTimeout.current = setTimeout(() => setCopied(false), 1800);
-    } catch {
-      window.location.href = `mailto:${socialLinks.email}`;
-    }
-  };
 
   const iconProps = { size: 18, strokeWidth: 1.5, "aria-hidden": true };
 
@@ -40,11 +26,11 @@ function Contact() {
       className="relative z-10 px-6 text-white sm:px-10 lg:px-16"
     >
       <div className="font-satoshi mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 border-t border-white/10 py-8">
-        <p className="text-xs text-white/40">
-          © {new Date().getFullYear()} Mitchell Brenner · San Francisco, CA
+        <p className="text-xs text-white/55">
+          © {year} Mitchell Brenner · San Francisco, CA
         </p>
 
-        <nav aria-label="Social links" className="flex items-center gap-1">
+        <nav aria-label="Footer links" className="flex items-center gap-1">
           <a
             href={socialLinks.github}
             target="_blank"
@@ -69,11 +55,11 @@ function Contact() {
             aria-label={
               copied ? "Email copied" : `Copy email ${socialLinks.email}`
             }
-            className={`relative ${iconLinkClassName}`}
+            className={iconLinkClassName}
           >
             {copied ? <Check {...iconProps} /> : <Mail {...iconProps} />}
             {copied && (
-              <span className="absolute bottom-full mb-1 whitespace-nowrap text-[11px] text-[#9ac8d6]">
+              <span className="absolute bottom-full mb-1 whitespace-nowrap text-[11px] text-accent">
                 Copied
               </span>
             )}
@@ -96,4 +82,4 @@ function Contact() {
   );
 }
 
-export default Contact;
+export default Footer;

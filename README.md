@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mitchell Brenner — Portfolio
 
-## Getting Started
+Personal portfolio site: a snowy mountain hero with a light/dark sky, followed by experience, projects, tech stack, and an about section.
 
-First, run the development server:
+Built with Next.js (App Router), React, TypeScript, and Tailwind CSS v4.
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Other scripts:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run build` — production build
+- `npm run start` — serve the production build
+- `npm run lint` — lint the project
 
-## Learn More
+## Where things live
 
-To learn more about Next.js, take a look at the following resources:
+| What | Where |
+| --- | --- |
+| Page layout (section order) | `src/app/page.tsx` |
+| Title, description, share preview | `src/app/layout.tsx`, `src/app/opengraph-image.jpg` |
+| Hero (mountains, snow, sky, intro animation) | `src/components/Hero.tsx` |
+| Experience & education | `src/components/Experience.tsx` |
+| Projects (data) | `src/lib/projects.ts` |
+| Tech stack (data) | `src/lib/tech.ts` |
+| Social links, email, resume path | `src/lib/links.ts` |
+| About | `src/components/About.tsx` |
+| Animations (intro, scroll parallax, reveals, glows) | `src/app/globals.css` |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Adding a project
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Add a screenshot to `public/projects/` (the cards crop to roughly 1.9:1).
+2. Add an entry to `src/lib/projects.ts`. The first three are featured; the rest show under "View all".
 
-## Deploy on Vercel
+## Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Site URL:** share previews, the sitemap, and structured data use `NEXT_PUBLIC_SITE_URL`. On Vercel it falls back to the production domain automatically; set it if you use a custom domain.
+- **Motion:** the scroll parallax and section reveals use native CSS scroll-driven animations (GSAP is a fallback for older browsers). Everything respects the reduced-motion setting.
+- **UI components:** light rays, meteors, magic card, and the theme toggler come from [Magic UI](https://magicui.design) and live in `src/components/ui/`.

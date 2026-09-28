@@ -1,11 +1,12 @@
 "use client";
 
 import { Check, FileText, Github, Linkedin, Mail } from "lucide-react";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
+import { useCopyEmail } from "@/hooks/use-copy-email";
 import { socialLinks } from "@/lib/links";
 
 const itemClassName =
-  "group relative flex size-9 cursor-pointer items-center justify-center rounded-full opacity-70 transition duration-300 hover:-translate-y-0.5 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-current";
+  "group relative flex size-9 cursor-pointer items-center justify-center rounded-full opacity-70 transition duration-300 hover:-translate-y-0.5 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-current after:absolute after:-inset-1 after:content-['']";
 
 function Label({ children }: { children: ReactNode }) {
   return (
@@ -16,36 +17,14 @@ function Label({ children }: { children: ReactNode }) {
 }
 
 function HeroLinks() {
-  const [copied, setCopied] = useState(false);
-  const copiedTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (copiedTimeout.current) {
-        clearTimeout(copiedTimeout.current);
-      }
-    };
-  }, []);
-
-  const copyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(socialLinks.email);
-      setCopied(true);
-      if (copiedTimeout.current) {
-        clearTimeout(copiedTimeout.current);
-      }
-      copiedTimeout.current = setTimeout(() => setCopied(false), 1800);
-    } catch {
-      window.location.href = `mailto:${socialLinks.email}`;
-    }
-  };
+  const { copied, copyEmail } = useCopyEmail();
 
   const iconProps = { size: 18, strokeWidth: 1.5, "aria-hidden": true };
 
   return (
     <nav
       aria-label="Social links"
-      className="hero-intro-links mt-2 flex items-center gap-3 text-[#1a2229] dark:text-[#EBEBEB] sm:gap-4"
+      className="hero-intro-links mt-2 flex items-center gap-3 text-ink dark:text-daylight sm:gap-4"
     >
       <a
         href={socialLinks.github}
