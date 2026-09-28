@@ -27,7 +27,7 @@ const entries: Entry[] = [
     highlights: [
       "Designed and built a reservation system end to end, from database schema and validated APIs to a bitmask-based O(n) availability algorithm for real-time scheduling.",
       "Architected an incentives program with tier-based rewards, configurable promotions, and earning and redemption flows.",
-      "Built and maintained backend architecture and cross-platform features during a company merger and full system rebuild.",
+      "Built a callback support system across internal and partner-facing apps, with authenticated ticket workflows, a durable queue, workload-balanced assignment, and Slack-based agent controls.",
     ],
   },
   {
