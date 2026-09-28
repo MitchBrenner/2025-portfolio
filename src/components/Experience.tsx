@@ -113,11 +113,11 @@ function Experience() {
 
               {entry.description && (
                 <div className="md:pt-1">
-                  <p className="font-satoshi max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg sm:leading-8">
+                  <p className="font-satoshi text-base leading-relaxed text-white/75 sm:text-lg sm:leading-8">
                     {entry.description}
                   </p>
                   {entry.highlights && (
-                    <ul className="mt-4 max-w-2xl space-y-3">
+                    <ul className="mt-4 space-y-3">
                       {entry.highlights.map((highlight) => (
                         <li
                           key={highlight}
