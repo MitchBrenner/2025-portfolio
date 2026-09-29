@@ -258,44 +258,42 @@
 /* Hero scroll parallax, driven natively by scroll position where supported
    (smooth during iOS momentum scrolling); GSAP handles older browsers. */
 @supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .front-mountain,
-    .name-text {
-      will-change: translate;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-timeline: scroll(root);
-      animation-range: 0 100svh;
-    }
+  .front-mountain,
+  .name-text {
+    will-change: translate;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root);
+    animation-range: 0 100svh;
+  }
 
+  .front-mountain {
+    --mountain-parallax: -16%;
+    animation-name: hero-front-mountain-parallax;
+  }
+
+  .name-text {
+    --name-parallax: 60svh;
+    animation-name: hero-name-parallax;
+  }
+
+  /* Desktop moves a bit faster */
+  @media (min-width: 768px) {
     .front-mountain {
-      --mountain-parallax: -16%;
-      animation-name: hero-front-mountain-parallax;
+      --mountain-parallax: -21%;
     }
 
     .name-text {
-      --name-parallax: 60svh;
-      animation-name: hero-name-parallax;
+      --name-parallax: 75svh;
     }
+  }
 
-    /* Desktop moves a bit faster */
-    @media (min-width: 768px) {
-      .front-mountain {
-        --mountain-parallax: -21%;
-      }
-
-      .name-text {
-        --name-parallax: 75svh;
-      }
-    }
-
-    .scroll-text {
-      animation-name: hero-scroll-hint-out;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-timeline: scroll(root);
-      animation-range: 0 min(250px, 35svh);
-    }
+  .scroll-text {
+    animation-name: hero-scroll-hint-out;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root);
+    animation-range: 0 min(250px, 35svh);
   }
 }
 
@@ -319,15 +317,13 @@
 
 /* Fade content up as it scrolls into view (native scroll timeline, no JS) */
 @supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .reveal-on-scroll {
-      animation-name: reveal-up;
-      animation-timing-function: ease-out;
-      animation-fill-mode: both;
-      animation-timeline: view();
-      /* --reveal-offset staggers items in the same row (e.g. project cards) */
-      animation-range: cover var(--reveal-offset, 0%) cover calc(40% + var(--reveal-offset, 0%));
-    }
+  .reveal-on-scroll {
+    animation-name: reveal-up;
+    animation-timing-function: ease-out;
+    animation-fill-mode: both;
+    animation-timeline: view();
+    /* --reveal-offset staggers items in the same row (e.g. project cards) */
+    animation-range: cover var(--reveal-offset, 0%) cover calc(40% + var(--reveal-offset, 0%));
   }
 }
 
@@ -369,23 +365,5 @@
     opacity: 0;
     translate: 0 20px;
     scale: 0.98;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .project-expand-in,
-  .ambient-glow,
-  .scroll-indicator-line,
-  .hero-intro-fog,
-  .hero-fog-drift-left,
-  .hero-fog-drift-right,
-  .hero-fog-drift-low,
-  .hero-intro-back-mountain,
-  .hero-intro-front-mountain,
-  .hero-intro-letter,
-  .hero-intro-role,
-  .hero-intro-links,
-  .hero-intro-fade {
-    animation: none;
   }
 }

@@ -18,7 +18,6 @@ import { LightRays } from "@/components/ui/light-rays";
 import { Meteors } from "@/components/ui/meteors";
 import HeroLinks from "@/components/HeroLinks";
 import { useIsDark } from "@/hooks/use-is-dark";
-import { useMediaQuery } from "@/hooks/use-media-query";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -89,7 +88,6 @@ function Hero() {
   const currentWind = useRef(0);
   const windFrame = useRef<number | null>(null);
   const isDark = useIsDark();
-  const reduceMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
 
   // Keep the browser toolbar tint (Safari/Chrome) matched to the hero sky.
   useEffect(() => {
@@ -103,10 +101,6 @@ function Hero() {
     if (!particles) {
       windFrame.current = null;
       return;
-    }
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      targetWind.current = 0;
     }
 
     currentWind.current += (targetWind.current - currentWind.current) * 0.08;
@@ -137,10 +131,7 @@ function Hero() {
   }, [animateWind]);
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (
-      event.pointerType !== "mouse" ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
+    if (event.pointerType !== "mouse") {
       return;
     }
 
@@ -167,7 +158,7 @@ function Hero() {
         return;
       }
 
-      media.add("(prefers-reduced-motion: no-preference)", () => {
+      media.add("all", () => {
         gsap.to(".front-mountain", {
           // Desktop moves a bit faster (matches the CSS scroll-driven version)
           yPercent: () => (window.innerWidth >= 768 ? -21 : -16),
@@ -244,7 +235,7 @@ function Hero() {
         <LightRays
           className="z-0 [mask-image:linear-gradient(to_bottom,transparent,black_15%)]"
           color="rgba(255, 205, 95, 0.35)"
-          count={reduceMotion ? 0 : 3}
+          count={3}
           blur={22}
           glow={false}
           speed={16}
@@ -258,7 +249,7 @@ function Hero() {
           <LightRays
             className="z-0 [mask-image:linear-gradient(to_bottom,transparent,black_15%)]"
             color="rgba(16, 220, 150, 0.35)"
-            count={reduceMotion ? 0 : 4}
+            count={4}
             blur={40}
             speed={10}
             length="100vh"
@@ -266,7 +257,7 @@ function Hero() {
           <LightRays
             className="z-0 [mask-image:linear-gradient(to_bottom,transparent,black_15%)]"
             color="rgba(40, 150, 255, 0.35)"
-            count={reduceMotion ? 0 : 3}
+            count={3}
             blur={44}
             speed={13}
             length="90vh"
@@ -274,31 +265,27 @@ function Hero() {
         </>
       )}
 
-      {/* Meteors (night only; off for reduced motion) */}
-      {!reduceMotion && (
-        <div className="pointer-events-none absolute inset-0 z-0 hidden overflow-hidden dark:block">
-          <Meteors
-            number={2}
-            angle={75}
-            minDelay={1}
-            maxDelay={10}
-            minDuration={14}
-            maxDuration={20}
-          />
-        </div>
-      )}
+      {/* Meteors (night only) */}
+      <div className="pointer-events-none absolute inset-0 z-0 hidden overflow-hidden dark:block">
+        <Meteors
+          number={2}
+          angle={75}
+          minDelay={1}
+          maxDelay={10}
+          minDuration={14}
+          maxDuration={20}
+        />
+      </div>
 
       {/* Particles Component */}
-      {!reduceMotion && (
-        <ParticlesProvider init={loadSnowEngine}>
-          <Particles
-            className="pointer-events-none absolute inset-0 z-5 h-full w-full overflow-hidden dark:opacity-55"
-            options={SNOW_OPTIONS}
-            id="tsparticles"
-            particlesLoaded={handleParticlesLoaded}
-          />
-        </ParticlesProvider>
-      )}
+      <ParticlesProvider init={loadSnowEngine}>
+        <Particles
+          className="pointer-events-none absolute inset-0 z-5 h-full w-full overflow-hidden dark:opacity-55"
+          options={SNOW_OPTIONS}
+          id="tsparticles"
+          particlesLoaded={handleParticlesLoaded}
+        />
+      </ParticlesProvider>
       {/* Background Mountain */}
       <div className="hero-intro-back-mountain absolute top-0 left-0 sm:-top-20 z-1 h-[90%] w-full short-landscape:h-[130%]">
         <Image

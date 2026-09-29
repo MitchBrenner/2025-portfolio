@@ -41,5 +41,5 @@ Other scripts:
 ## Notes
 
 - **Site URL:** share previews, the sitemap, and structured data use `NEXT_PUBLIC_SITE_URL`. On Vercel it falls back to the production domain automatically; set it if you use a custom domain.
-- **Motion:** the scroll parallax and section reveals use native CSS scroll-driven animations (GSAP is a fallback for older browsers). Everything respects the reduced-motion setting.
+- **Motion:** the scroll parallax and section reveals use native CSS scroll-driven animations (GSAP is a fallback for older browsers). Animations always run, including when a device has Reduce Motion turned on, so the hero always shows as designed.
 - **UI components:** light rays, meteors, magic card, and the theme toggler come from [Magic UI](https://magicui.design) and live in `src/components/ui/`.
