@@ -71,6 +71,12 @@
   html.dark body {
     background-color: #020305;
   }
+  /* Past the hero, match the dark sections so Safari's bottom toolbar area
+     blends with the footer (toggled from Hero.tsx) */
+  html.past-hero,
+  html.past-hero body {
+    background-color: #1a222b;
+  }
   * {
     @apply border-border outline-ring/50;
   }

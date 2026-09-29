@@ -10,6 +10,7 @@ import {
   useCallback,
   useEffect,
   useRef,
+  useState,
   type PointerEvent,
 } from "react";
 import Particles, { ParticlesProvider } from "@tsparticles/react";
@@ -28,6 +29,7 @@ ScrollTrigger.config({ ignoreMobileResize: true });
 const MAX_WIND = 0.8;
 const SKY_LIGHT = "#EBEBEB";
 const SKY_DARK = "#020305";
+const PAGE_COLOR = "#1a222b";
 const NAME = "Mitchell Brenner";
 const NAME_INTRO_DELAY = 0.4;
 const NAME_LETTER_STAGGER = 0.025;
@@ -89,12 +91,33 @@ function Hero() {
   const windFrame = useRef<number | null>(null);
   const isDark = useIsDark();
 
-  // Keep the browser toolbar tint (Safari/Chrome) matched to the hero sky.
+  const [pastHero, setPastHero] = useState(false);
+
+  // Once the hero scrolls away, switch the page's base color from the sky to
+  // the section navy so Safari's toolbar area at the bottom matches the footer
+  useEffect(() => {
+    const hero = container.current;
+    if (!hero) return;
+    const observer = new IntersectionObserver(([entry]) =>
+      setPastHero(!entry.isIntersecting),
+    );
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("past-hero", pastHero);
+  }, [pastHero]);
+
+  // Keep the browser toolbar tint (Safari/Chrome) matched to what's on screen
   useEffect(() => {
     document
       .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", isDark ? SKY_DARK : SKY_LIGHT);
-  }, [isDark]);
+      ?.setAttribute(
+        "content",
+        pastHero ? PAGE_COLOR : isDark ? SKY_DARK : SKY_LIGHT,
+      );
+  }, [isDark, pastHero]);
 
   const animateWind = useCallback(() => {
     const particles = particlesContainer.current?.particles;
