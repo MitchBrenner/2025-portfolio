@@ -14,6 +14,11 @@ interface MeteorsProps {
   className?: string
 }
 
+const randomStart = () => ({
+  top: `${Math.floor(Math.random() * 30)}%`,
+  left: `${Math.floor(Math.random() * 60) - 10}%`,
+})
+
 export const Meteors = ({
   number = 20,
   minDelay = 0.2,
@@ -30,8 +35,7 @@ export const Meteors = ({
   useEffect(() => {
     const styles = [...new Array(number)].map(() => ({
       "--angle": -angle + "deg",
-      top: `${Math.floor(Math.random() * 30)}%`,
-      left: `${Math.floor(Math.random() * 60) - 10}%`,
+      ...randomStart(),
       animationDelay: Math.random() * (maxDelay - minDelay) + minDelay + "s",
       animationDuration:
         Math.floor(Math.random() * (maxDuration - minDuration) + minDuration) +
@@ -47,6 +51,12 @@ export const Meteors = ({
         <span
           key={idx}
           style={{ ...style }}
+          // Pick a new starting point each time the meteor comes back around
+          onAnimationIteration={() =>
+            setMeteorStyles((current) =>
+              current.map((s, i) => (i === idx ? { ...s, ...randomStart() } : s))
+            )
+          }
           className={cn(
             "animate-meteor pointer-events-none absolute size-0.5 rotate-(--angle) rounded-full bg-white opacity-0 shadow-[0_0_6px_2px_rgba(255,255,255,0.7)]",
             className

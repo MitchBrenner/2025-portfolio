@@ -34,51 +34,42 @@ const NAME = "Mitchell Brenner";
 const NAME_INTRO_DELAY = 0.4;
 const NAME_LETTER_STAGGER = 0.025;
 
-// Defined once so the snow isn't restarted on every re-render
-const SNOW_OPTIONS: ISourceOptions = {
+// Snow settings per screen size, defined once so the snow isn't restarted on
+// re-renders. (tsparticles v4 no longer supports its `responsive` option, so
+// the size is picked in code.)
+const snowOptions = (
+  count: number,
+  size: number,
+  speed: number,
+): ISourceOptions => ({
   fullScreen: { enable: false },
   detectRetina: false,
   fpsLimit: 60,
-  responsive: [
-    {
-      maxWidth: 640,
-      options: {
-        particles: {
-          number: { value: 150 },
-          size: { value: { min: 1, max: 2.5 } },
-          move: { speed: { min: 1, max: 4 } },
-        },
-      },
-    },
-    {
-      maxWidth: 1024,
-      options: { particles: { number: { value: 220 } } },
-    },
-  ],
   particles: {
-    color: {
-      value: "#fff",
-    },
-    number: {
-      value: 500,
-    },
-    opacity: {
-      value: { min: 0.3, max: 1 },
-    },
-    shape: {
-      type: "circle",
-    },
-    size: {
-      value: { min: 1, max: 5 },
-    },
+    color: { value: "#fff" },
+    number: { value: count },
+    opacity: { value: { min: 0.3, max: 1 } },
+    shape: { type: "circle" },
+    size: { value: { min: 1, max: size } },
     move: {
       direction: "bottom",
       enable: true,
-      speed: { min: 2, max: 7 },
+      speed: { min: speed / 3.5, max: speed },
       straight: true,
     },
   },
-};
+});
+
+const SNOW_PHONE = snowOptions(160, 2.5, 4);
+const SNOW_TABLET = snowOptions(220, 5, 7);
+const SNOW_DESKTOP = snowOptions(500, 5, 7);
+
+function pickSnowOptions() {
+  if (typeof window === "undefined") return SNOW_DESKTOP;
+  if (window.innerWidth <= 640) return SNOW_PHONE;
+  if (window.innerWidth <= 1024) return SNOW_TABLET;
+  return SNOW_DESKTOP;
+}
 
 // Loads only the particle features the snow needs; must stay stable across renders
 const loadSnowEngine = (engine: Engine) => loadSlim(engine);
@@ -92,6 +83,13 @@ function Hero() {
   const isDark = useIsDark();
 
   const [pastHero, setPastHero] = useState(false);
+  // Chosen once on load; the snow isn't restarted if the window is resized
+  const [snowSettings] = useState(pickSnowOptions);
+  const [snowReady, setSnowReady] = useState(false);
+  // Blurred light rays are expensive to draw, so phones and tablets get fewer
+  const [fewerRays] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < 1024,
+  );
 
   // Once the hero scrolls away, switch the page's base color from the sky to
   // the section navy so Safari's toolbar area at the bottom matches the footer
@@ -236,6 +234,7 @@ function Hero() {
   const handleParticlesLoaded = useCallback(
     async (loaded?: Container) => {
       particlesContainer.current = loaded ?? null;
+      setSnowReady(true);
       startWind();
     },
     [startWind],
@@ -255,43 +254,45 @@ function Hero() {
       {/* Sun Rays (day only, behind mountains and name). Rays fade in below the top
           edge so the sky there matches the solid color Safari paints behind its status bar. */}
       {!isDark && (
-        <LightRays
-          className="z-0 [mask-image:linear-gradient(to_bottom,transparent,black_15%)]"
-          color="rgba(255, 205, 95, 0.35)"
-          count={3}
-          blur={22}
-          glow={false}
-          speed={16}
-          length="100vh"
-        />
+        <div className="hero-quick-fade pointer-events-none absolute inset-0 z-0">
+          <LightRays
+            className="z-0 [mask-image:linear-gradient(to_bottom,transparent,black_15%)]"
+            color="rgba(255, 205, 95, 0.35)"
+            count={fewerRays ? 2 : 3}
+            blur={22}
+            glow={false}
+            speed={16}
+            length="100vh"
+          />
+        </div>
       )}
 
       {/* Aurora Light Rays (night only, behind mountains and name) */}
       {isDark && (
-        <>
+        <div className="hero-quick-fade pointer-events-none absolute inset-0 z-0">
           <LightRays
             className="z-0 [mask-image:linear-gradient(to_bottom,transparent,black_15%)]"
-            color="rgba(16, 220, 150, 0.35)"
-            count={4}
+            color="rgba(16, 220, 150, 0.3)"
+            count={fewerRays ? 2 : 3}
             blur={40}
             speed={10}
             length="100vh"
           />
           <LightRays
             className="z-0 [mask-image:linear-gradient(to_bottom,transparent,black_15%)]"
-            color="rgba(40, 150, 255, 0.35)"
-            count={3}
+            color="rgba(40, 150, 255, 0.3)"
+            count={fewerRays ? 1 : 2}
             blur={44}
             speed={13}
             length="90vh"
           />
-        </>
+        </div>
       )}
 
-      {/* Meteors (night only) */}
-      <div className="pointer-events-none absolute inset-0 z-0 hidden overflow-hidden dark:block">
+      {/* Meteor (night only, desktop only; one at a time) */}
+      <div className="pointer-events-none absolute inset-0 z-0 hidden overflow-hidden lg:dark:block">
         <Meteors
-          number={2}
+          number={1}
           angle={75}
           minDelay={1}
           maxDelay={10}
@@ -303,8 +304,10 @@ function Hero() {
       {/* Particles Component */}
       <ParticlesProvider init={loadSnowEngine}>
         <Particles
-          className="pointer-events-none absolute inset-0 z-5 h-full w-full overflow-hidden dark:opacity-55"
-          options={SNOW_OPTIONS}
+          className={`pointer-events-none absolute inset-0 z-5 h-full w-full overflow-hidden transition-opacity duration-300 ${
+            snowReady ? "opacity-100 dark:opacity-55" : "opacity-0"
+          }`}
+          options={snowSettings}
           id="tsparticles"
           particlesLoaded={handleParticlesLoaded}
         />

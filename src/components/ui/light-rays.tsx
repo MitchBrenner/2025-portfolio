@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, type CSSProperties } from "react"
+import { useMemo, type CSSProperties } from "react"
 import { motion } from "motion/react"
 
 import { cn } from "@/lib/utils"
@@ -26,17 +26,35 @@ type LightRay = {
   intensity: number
 }
 
-const createRays = (count: number, cycle: number): LightRay[] => {
+// Small seeded random generator: the same seed always gives the same rays,
+// so they can render on the server and hydrate without a mismatch
+const seededRandom = (seed: string) => {
+  let h = 1779033703 ^ seed.length
+  for (let i = 0; i < seed.length; i++) {
+    h = Math.imul(h ^ seed.charCodeAt(i), 3432918353)
+    h = (h << 13) | (h >>> 19)
+  }
+  return () => {
+    h = Math.imul(h ^ (h >>> 16), 2246822507)
+    h = Math.imul(h ^ (h >>> 13), 3266489909)
+    return ((h ^= h >>> 16) >>> 0) / 4294967296
+  }
+}
+
+const createRays = (count: number, cycle: number, seed: string): LightRay[] => {
   if (count <= 0) return []
+  const random = seededRandom(`${seed}-${count}-${cycle}`)
 
   return Array.from({ length: count }, (_, index) => {
-    const left = 8 + Math.random() * 84
-    const rotate = -28 + Math.random() * 56
-    const width = 160 + Math.random() * 160
-    const swing = 0.8 + Math.random() * 1.8
-    const delay = Math.random() * cycle
-    const duration = cycle * (0.75 + Math.random() * 0.5)
-    const intensity = 0.6 + Math.random() * 0.5
+    const left = 8 + random() * 84
+    const rotate = -28 + random() * 56
+    const width = 160 + random() * 160
+    const swing = 0.8 + random() * 1.8
+    const duration = cycle * (0.75 + random() * 0.5)
+    // Negative delay starts each ray partway through its cycle, so some are
+    // already visible right away instead of all waiting to fade in
+    const delay = -random() * duration
+    const intensity = 0.6 + random() * 0.5
 
     return {
       id: `${index}-${Math.round(left * 10)}`,
@@ -97,12 +115,12 @@ export function LightRays({
   ref,
   ...props
 }: LightRaysProps) {
-  const [rays, setRays] = useState<LightRay[]>([])
   const cycleDuration = Math.max(speed, 0.1)
-
-  useEffect(() => {
-    setRays(createRays(count, cycleDuration))
-  }, [count, cycleDuration])
+  // Generated during render (not after mount) so rays show up immediately
+  const rays = useMemo(
+    () => createRays(count, cycleDuration, color),
+    [count, cycleDuration, color]
+  )
 
   return (
     <div
