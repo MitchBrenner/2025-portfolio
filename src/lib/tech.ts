@@ -36,11 +36,12 @@ export const techGroups: { label: string; items: TechItem[] }[] = [
     ],
   },
   {
-    label: "Tools",
+    label: "Tools & Platforms",
     items: [
-      { name: "OpenCV", image: "/icons/opencv.svg" },
-      { name: "Git", image: "/icons/git.svg" },
+      { name: "Git & GitHub", image: "/icons/git.svg" },
+      { name: "Vercel", image: "/icons/vercel.svg" },
       { name: "Clerk", image: "/icons/clerk.svg" },
+      { name: "OpenCV", image: "/icons/opencv.svg" },
     ],
   },
 ];
